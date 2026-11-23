@@ -1,0 +1,336 @@
+{
+  "version": "1.0.0",
+  "updatedAt": "2026-11-23T06:19:18.090Z",
+  "philosophy": {
+    "colorAbstracted": true,
+    "summary": "Colors are project-level semantic tokens. Taste governs geometry, surfaces, typography, spacing rhythm, motion physics, and interaction ergonomics."
+  },
+  "dials": {
+    "density": "balanced",
+    "baseRadius": 10,
+    "concentricRadii": true,
+    "borderStrength": 1,
+    "shadowDepth": 0.45,
+    "pressScale": 0.975,
+    "durationMs": 180,
+    "motionMode": "spring",
+    "springStiffness": 420,
+    "springDamping": 32,
+    "fontPairing": "geometric",
+    "tabularNums": true,
+    "trackingTightness": "subtle"
+  },
+  "specimens": {
+    "surfaces": {
+      "winnerId": "hairline-architectural",
+      "selectedIds": [
+        "hairline-architectural",
+        "layered-tactile"
+      ],
+      "rejectedIds": [],
+      "whyNote": "",
+      "neverNote": "",
+      "updatedAt": "2026-11-23T05:02:12.256Z"
+    },
+    "typography": {
+      "winnerId": "tight-engineered",
+      "selectedIds": [
+        "tight-engineered"
+      ],
+      "rejectedIds": [],
+      "whyNote": "",
+      "neverNote": "",
+      "updatedAt": "2026-11-23T04:42:58.360Z"
+    },
+    "buttons": {
+      "winnerId": "tactile-bevel",
+      "selectedIds": [
+        "tactile-bevel",
+        "soft-pill"
+      ],
+      "rejectedIds": [],
+      "whyNote": "",
+      "neverNote": "",
+      "updatedAt": "2026-11-23T05:02:43.666Z"
+    },
+    "inputs": {
+      "winnerId": "floating-label",
+      "selectedIds": [
+        "floating-label"
+      ],
+      "rejectedIds": [],
+      "whyNote": "",
+      "neverNote": "",
+      "updatedAt": "2026-11-23T04:44:33.988Z"
+    },
+    "tabs": {
+      "winnerId": "icon-count-badges",
+      "selectedIds": [
+        "icon-count-badges",
+        "minimal-dot-editorial",
+        "hairline-underline",
+        "floating-pill",
+        "vertical-rail"
+      ],
+      "rejectedIds": [],
+      "whyNote": "",
+      "neverNote": "",
+      "updatedAt": "2026-11-23T05:04:00.020Z"
+    },
+    "overlays": {
+      "winnerId": "inline-morph-confirm",
+      "selectedIds": [
+        "inline-morph-confirm",
+        "centered-crisp-modal"
+      ],
+      "rejectedIds": [],
+      "whyNote": "",
+      "neverNote": "",
+      "updatedAt": "2026-11-23T05:04:22.184Z"
+    },
+    "popovers": {
+      "winnerId": "filter-popover",
+      "selectedIds": [
+        "filter-popover",
+        "drilldown-submenu",
+        "grid-swatch-picker",
+        "quick-settings-popover"
+      ],
+      "rejectedIds": [],
+      "whyNote": "",
+      "neverNote": "",
+      "updatedAt": "2026-11-23T05:05:46.879Z"
+    },
+    "command-palette": {
+      "winnerId": "pinned-hybrid-palette",
+      "selectedIds": [
+        "pinned-hybrid-palette",
+        "linear-grouped-palette",
+        "tabbed-category-palette"
+      ],
+      "rejectedIds": [],
+      "whyNote": "",
+      "neverNote": "",
+      "updatedAt": "2026-11-23T05:08:02.275Z"
+    },
+    "toasts": {
+      "winnerId": "sonner-stacked-deck",
+      "selectedIds": [
+        "sonner-stacked-deck",
+        "promise-lifecycle-toast",
+        "action-pair-toast",
+        "top-sticky-banner",
+        "batch-counter-digest",
+        "diagnostic-expandable-toast",
+        "hairline-progress-toast",
+        "optimistic-undo-bar",
+        "dynamic-top-pill"
+      ],
+      "rejectedIds": [],
+      "whyNote": "",
+      "neverNote": "",
+      "updatedAt": "2026-11-23T05:09:18.968Z"
+    },
+    "app-shell": {
+      "winnerId": "floating-inset-canvas",
+      "selectedIds": [
+        "floating-inset-canvas",
+        "hover-peek-drawer",
+        "dual-rail-ide",
+        "bottom-floating-dock",
+        "collapsible-inspector-shell"
+      ],
+      "rejectedIds": [],
+      "whyNote": "",
+      "neverNote": "",
+      "updatedAt": "2026-11-23T05:10:17.478Z"
+    },
+    "data-tables": {
+      "winnerId": "bulk-select-floating-bar",
+      "selectedIds": [
+        "hairline-sortable-table",
+        "bulk-select-floating-bar",
+        "faceted-filter-table",
+        "pinned-summary-footer",
+        "compact-density-ledger",
+        "table-card-responsive"
+      ],
+      "rejectedIds": [],
+      "whyNote": "",
+      "neverNote": "",
+      "updatedAt": "2026-11-23T05:50:41.723Z"
+    },
+    "resilience-states": {
+      "winnerId": "structural-skeleton-shimmer",
+      "selectedIds": [
+        "structural-skeleton-shimmer",
+        "actionable-empty-state",
+        "optimistic-stale-revalidating",
+        "partial-section-fallback",
+        "progressive-stage-loader",
+        "permission-locked-state",
+        "offline-cached-recovery",
+        "search-zero-results-reset"
+      ],
+      "rejectedIds": [],
+      "whyNote": "",
+      "neverNote": "",
+      "updatedAt": "2026-11-23T05:51:57.534Z"
+    },
+    "ai-streaming": {
+      "winnerId": "smooth-token-fade",
+      "selectedIds": [
+        "smooth-token-fade",
+        "caret-cursor-stream",
+        "stop-and-resume-pill",
+        "structured-artifact-card",
+        "branching-regenerations",
+        "scroll-lock-jump-pill",
+        "structured-streaming-table"
+      ],
+      "rejectedIds": [],
+      "whyNote": "",
+      "neverNote": "",
+      "updatedAt": "2026-11-23T05:52:52.343Z"
+    },
+    "ai-thinking-tools": {
+      "winnerId": "collapsed-thinking-pill",
+      "selectedIds": [
+        "collapsed-thinking-pill",
+        "live-reasoning-timeline",
+        "terminal-command-drawer",
+        "file-read-search-cluster",
+        "mcp-tool-inspector",
+        "parallel-subagent-cards",
+        "live-web-search-cards",
+        "interleaved-plan-checklist",
+        "token-latency-telemetry"
+      ],
+      "rejectedIds": [],
+      "whyNote": "",
+      "neverNote": "",
+      "updatedAt": "2026-11-23T05:57:15.902Z"
+    },
+    "ai-hitl-diffs": {
+      "winnerId": "inline-approval-bar",
+      "selectedIds": [
+        "inline-approval-bar",
+        "unified-code-diff-review",
+        "split-side-by-side-diff",
+        "permission-scope-selector",
+        "destructive-command-gate",
+        "editable-params-before-run",
+        "multi-file-patch-queue",
+        "revert-checkpoint-pill",
+        "human-clarification-card",
+        "policy-trust-rules-badge"
+      ],
+      "rejectedIds": [],
+      "whyNote": "",
+      "neverNote": "",
+      "updatedAt": "2026-11-23T05:55:01.976Z"
+    },
+    "cards-metrics": {
+      "selectedIds": [
+        "kpi-sparkline-card",
+        "selectable-plan-card",
+        "media-content-card",
+        "activity-timeline-card",
+        "quota-usage-meter",
+        "compact-horizontal-row-card",
+        "collapsible-detail-card",
+        "pricing-comparison-card",
+        "profile-entity-summary"
+      ],
+      "rejectedIds": [],
+      "whyNote": "",
+      "neverNote": "",
+      "updatedAt": "2026-11-23T06:14:55.843Z",
+      "winnerId": "kpi-sparkline-card"
+    },
+    "onboarding-wizards": {
+      "selectedIds": [
+        "horizontal-numbered-stepper",
+        "vertical-rail-stepper",
+        "slim-top-progress-wizard",
+        "onboarding-checklist-card",
+        "single-question-focus-flow",
+        "progressive-inline-reveal",
+        "review-confirm-summary",
+        "draft-resume-bar"
+      ],
+      "rejectedIds": [],
+      "whyNote": "",
+      "neverNote": "",
+      "updatedAt": "2026-11-23T06:16:10.252Z",
+      "winnerId": "horizontal-numbered-stepper"
+    },
+    "rich-pickers-uploads": {
+      "selectedIds": [
+        "drag-drop-file-uploader",
+        "avatar-media-uploader",
+        "date-range-calendar",
+        "time-slot-scheduler",
+        "multi-tag-combobox",
+        "dual-range-slider-input",
+        "quantity-stepper-control",
+        "rating-feedback-control",
+        "share-link-invite-box",
+        "swatch-option-selector"
+      ],
+      "rejectedIds": [],
+      "whyNote": "",
+      "neverNote": "",
+      "updatedAt": "2026-11-23T06:17:59.478Z",
+      "winnerId": "drag-drop-file-uploader"
+    },
+    "lists-feeds-details": {
+      "selectedIds": [
+        "settings-section-rows",
+        "toggle-preference-list",
+        "inbox-message-list",
+        "comment-thread-composer",
+        "key-value-detail-grid",
+        "sortable-reorder-list",
+        "avatar-team-directory",
+        "billing-invoice-history",
+        "search-results-list",
+        "saved-bookmarks-grid"
+      ],
+      "rejectedIds": [],
+      "whyNote": "",
+      "neverNote": "",
+      "updatedAt": "2026-11-23T06:18:45.396Z",
+      "winnerId": "settings-section-rows"
+    },
+    "charts-analytics": {
+      "selectedIds": [
+        "bar-chart-hover-tooltip",
+        "area-trend-chart",
+        "segmented-breakdown-bar",
+        "radial-ring-gauge",
+        "activity-heatmap-grid",
+        "uptime-status-bars",
+        "funnel-conversion-steps",
+        "leaderboard-ranked-bars",
+        "comparison-metric-pair"
+      ],
+      "rejectedIds": [],
+      "whyNote": "",
+      "neverNote": "",
+      "updatedAt": "2026-11-23T06:19:18.090Z",
+      "winnerId": "bar-chart-hover-tooltip"
+    }
+  },
+  "globalRules": {
+    "always": [
+      "Abstract all colors behind semantic tokens (--surface-*, --ink-*, --border-*, --accent); never hardcode project hex colors in taste components.",
+      "Compute nested border radii concentrically (inner = max(0, outer - padding)).",
+      "Guard hover effects behind @media (hover: hover) and (pointer: fine)."
+    ],
+    "never": [
+      "Never scale elements in from scale(0); use subtle origin-aware scale (0.95 -> 1) with opacity.",
+      "Never ship generic eyebrow badge pills, pulsing status dots without live telemetry, or arbitrary Tailwind pixel values."
+    ]
+  }
+}

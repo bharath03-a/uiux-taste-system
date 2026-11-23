@@ -1,0 +1,26 @@
+{
+  "name": "@uiux-taste/linter",
+  "version": "0.1.0",
+  "description": "Zero-dependency deterministic WCAG 2.1 + APCA Lc contrast and UI taste linter for AI coding agents",
+  "type": "module",
+  "license": "MIT",
+  "bin": {
+    "taste-lint": "./bin/taste-lint.mjs"
+  },
+  "files": [
+    "bin/"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "ui",
+    "ux",
+    "contrast",
+    "wcag",
+    "apca",
+    "design-tokens",
+    "ai-agents",
+    "linter"
+  ]
+}

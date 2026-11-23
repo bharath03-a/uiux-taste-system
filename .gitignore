@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build outputs
+dist/
+build/
+.vite/
+*.tsbuildinfo
+
+# Logs & OS files
+.DS_Store
+*.log
+npm-debug.log*
+
+# Local environment secrets
+.env
+.env.local
+.env.*.local
+
+# Generated local harness mirrors (source of truth lives in skills/)
+.agents/
+.claude/
+.cursor/
+.gemini/
+

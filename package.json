@@ -1,0 +1,29 @@
+{
+  "name": "uiux-taste-system",
+  "version": "0.1.0",
+  "description": "Color-agnostic UI/UX Taste Lab, TASTE.md Compiler, WCAG/APCA Contrast Linter, Multi-Registry MCP Configs, and Portable AI Coding Agent Skills",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "taste-lint": "./packages/taste-linter/bin/taste-lint.mjs"
+  },
+  "scripts": {
+    "lab": "npm --prefix apps/taste-lab run dev",
+    "build": "npm --prefix apps/taste-lab run build",
+    "typecheck": "npm --prefix apps/taste-lab run typecheck",
+    "lint:taste": "node packages/taste-linter/bin/taste-lint.mjs",
+    "install:skills": "node scripts/install-skills.mjs"
+  },
+  "keywords": [
+    "ui",
+    "ux",
+    "design-system",
+    "taste",
+    "wcag",
+    "apca",
+    "contrast",
+    "agent-skills",
+    "mcp",
+    "shadcn"
+  ]
+}

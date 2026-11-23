@@ -1,0 +1,123 @@
+@import "tailwindcss";
+
+:root {
+  /* Semantic project color slots — overridden live by the Theme Swapper */
+  --surface-0: #f5f5f6;
+  --surface-1: #ffffff;
+  --surface-2: #ececef;
+  --surface-recessed: #e8e8ec;
+  --ink-1: #111113;
+  --ink-2: #52525b;
+  --ink-3: #71717a;
+  --border-rgb: 17, 17, 19;
+  --shadow-rgb: 17, 17, 19;
+  --accent: #111113;
+  --accent-ink: #ffffff;
+  --accent-soft: rgba(17, 17, 19, 0.08);
+  --danger: #b91c1c;
+  --danger-ink: #ffffff;
+  --danger-soft: rgba(185, 28, 28, 0.09);
+  --success: #15803d;
+  --focus-ring: rgba(17, 17, 19, 0.28);
+
+  /* Live Craft Dial computed variables */
+  --dial-radius: 10px;
+  --dial-radius-inner: 6px;
+  --dial-border-strength: 1;
+  --dial-shadow-depth: 0.45;
+  --dial-press-scale: 0.975;
+  --dial-duration: 180ms;
+  --dial-font-sans: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --dial-font-display: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --dial-font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+  --dial-tracking-display: -0.02em;
+  --dial-pad-card: 18px;
+  --dial-gap: 12px;
+  --dial-control-h: 36px;
+
+  /* Derived translucent borders so they adapt automatically to any project theme */
+  --border-subtle: rgba(var(--border-rgb), calc(0.09 * var(--dial-border-strength)));
+  --border-strong: rgba(var(--border-rgb), calc(0.18 * var(--dial-border-strength)));
+  --shadow-sm: 0 1px 2px rgba(var(--shadow-rgb), calc(0.08 * var(--dial-shadow-depth))),
+    0 0 0 1px rgba(var(--border-rgb), calc(0.06 * var(--dial-border-strength)));
+  --shadow-md: 0 2px 4px rgba(var(--shadow-rgb), calc(0.07 * var(--dial-shadow-depth))),
+    0 10px 24px -6px rgba(var(--shadow-rgb), calc(0.14 * var(--dial-shadow-depth))),
+    0 0 0 1px rgba(var(--border-rgb), calc(0.06 * var(--dial-border-strength)));
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--surface-0);
+  color: var(--ink-1);
+  font-family: var(--dial-font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Taste Craft Utilities */
+.tabular-nums-auto {
+  font-variant-numeric: tabular-nums;
+}
+
+.text-pretty-craft {
+  text-wrap: pretty;
+}
+
+.text-balance-craft {
+  text-wrap: balance;
+}
+
+/* Tactile press feedback driven by live dial */
+.craft-pressable {
+  transition:
+    transform var(--dial-duration) cubic-bezier(0.22, 1, 0.36, 1),
+    background-color var(--dial-duration) ease,
+    border-color var(--dial-duration) ease,
+    box-shadow var(--dial-duration) ease,
+    opacity var(--dial-duration) ease;
+}
+
+.craft-pressable:active:not(:disabled) {
+  transform: scale(var(--dial-press-scale));
+}
+
+/* Focus visible discipline */
+.craft-focus:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 2px var(--surface-1),
+    0 0 0 4px var(--focus-ring);
+}
+
+/* Pointer-guarded hover helper (no sticky mobile hover) */
+@media (hover: hover) and (pointer: fine) {
+  .craft-hover-surface:hover {
+    background-color: var(--surface-2);
+  }
+  .craft-hover-border:hover {
+    border-color: var(--border-strong);
+  }
+}
+
+/* Custom hairline scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(var(--border-rgb), 0.16);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(var(--border-rgb), 0.28);
+}
