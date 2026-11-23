@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "updatedAt": "2026-11-23T06:58:36.697Z",
+  "updatedAt": "2026-11-23T08:22:08.572Z",
   "philosophy": {
     "colorAbstracted": true,
     "summary": "Colors are project-level semantic tokens. Taste governs geometry, surfaces, typography, spacing rhythm, motion physics, and interaction ergonomics."
@@ -322,6 +322,7 @@
       "updatedAt": "2026-11-23T06:19:18.090Z"
     },
     "auth-security": {
+      "winnerId": "minimal-signin-card",
       "selectedIds": [
         "minimal-signin-card",
         "magic-link-passkey",
@@ -336,10 +337,10 @@
       "rejectedIds": [],
       "whyNote": "",
       "neverNote": "",
-      "updatedAt": "2026-11-23T06:53:41.628Z",
-      "winnerId": "minimal-signin-card"
+      "updatedAt": "2026-11-23T06:53:41.628Z"
     },
     "navigation-headers": {
+      "winnerId": "crisp-marketing-navbar",
       "selectedIds": [
         "crisp-marketing-navbar",
         "breadcrumb-overflow-trail",
@@ -354,10 +355,10 @@
       "rejectedIds": [],
       "whyNote": "",
       "neverNote": "",
-      "updatedAt": "2026-11-23T06:55:42.029Z",
-      "winnerId": "crisp-marketing-navbar"
+      "updatedAt": "2026-11-23T06:55:42.029Z"
     },
     "badges-avatars-chips": {
+      "winnerId": "avatar-stack-overflow",
       "selectedIds": [
         "avatar-stack-overflow",
         "semantic-status-badges",
@@ -372,10 +373,10 @@
       "rejectedIds": [],
       "whyNote": "",
       "neverNote": "",
-      "updatedAt": "2026-11-23T06:57:17.145Z",
-      "winnerId": "avatar-stack-overflow"
+      "updatedAt": "2026-11-23T06:57:17.145Z"
     },
     "heroes-landing-blocks": {
+      "winnerId": "editorial-centered-hero",
       "selectedIds": [
         "editorial-centered-hero",
         "split-product-hero",
@@ -384,10 +385,10 @@
       "rejectedIds": [],
       "whyNote": "",
       "neverNote": "",
-      "updatedAt": "2026-11-23T06:57:57.794Z",
-      "winnerId": "editorial-centered-hero"
+      "updatedAt": "2026-11-23T06:57:57.794Z"
     },
     "commerce-checkout": {
+      "winnerId": "product-card-quick-add",
       "selectedIds": [
         "product-card-quick-add",
         "cart-line-items",
@@ -403,8 +404,150 @@
       "rejectedIds": [],
       "whyNote": "",
       "neverNote": "",
-      "updatedAt": "2026-11-23T06:58:36.697Z",
-      "winnerId": "product-card-quick-add"
+      "updatedAt": "2026-11-23T06:58:36.697Z"
+    },
+    "risk-adjustment-coding": {
+      "winnerId": "qa-overread-dual-viewer",
+      "selectedIds": [
+        "qa-overread-dual-viewer",
+        "cdi-query-evidence-workspace"
+      ],
+      "rejectedIds": [],
+      "whyNote": "",
+      "neverNote": "",
+      "updatedAt": "2026-11-23T07:53:02.166Z"
+    },
+    "dashboards-ops-cockpits": {
+      "winnerId": "live-slo-uptime-strip",
+      "selectedIds": [
+        "live-slo-uptime-strip",
+        "natural-language-filter-bar",
+        "heatgrid-activity-calendar",
+        "multi-metric-spark-tile",
+        "keyboard-first-triage-strip",
+        "saved-views-tab-bar",
+        "alert-escalation-banner",
+        "quota-budget-segmented-bar"
+      ],
+      "rejectedIds": [],
+      "whyNote": "",
+      "neverNote": "",
+      "updatedAt": "2026-11-23T07:44:03.489Z"
+    },
+    "canvas-spatial-workflows": {
+      "winnerId": "kanban-swimlane-mini-board",
+      "selectedIds": [
+        "kanban-swimlane-mini-board",
+        "gantt-milestone-timeline",
+        "rule-condition-builder",
+        "split-resizable-pane-handle",
+        "multi-cursor-presence-bar",
+        "version-snapshot-scrubber",
+        "floating-canvas-zoom-minimap"
+      ],
+      "rejectedIds": [],
+      "whyNote": "",
+      "neverNote": "",
+      "updatedAt": "2026-11-23T07:58:08.080Z"
+    },
+    "document-annotation-review": {
+      "winnerId": "evidence-chain-drawer",
+      "selectedIds": [
+        "evidence-chain-drawer",
+        "document-checklist-gate"
+      ],
+      "rejectedIds": [],
+      "whyNote": "",
+      "neverNote": "",
+      "updatedAt": "2026-11-23T07:54:32.799Z"
+    },
+    "micro-interactions-motion": {
+      "winnerId": "morphing-action-island",
+      "selectedIds": [
+        "morphing-action-island",
+        "spring-segmented-pill-bar",
+        "animated-number-odometer",
+        "hold-to-confirm-button",
+        "magnetic-cursor-spotlight-card",
+        "expandable-quick-capture-bar",
+        "swipeable-card-stack-deck",
+        "collapsible-kinetic-accordion",
+        "live-waveform-voice-pill"
+      ],
+      "rejectedIds": [],
+      "whyNote": "",
+      "neverNote": "",
+      "updatedAt": "2026-11-23T07:56:36.129Z"
+    },
+    "advanced-table-views": {
+      "selectedIds": [
+        "saved-views-column-controls",
+        "multi-condition-filter-builder",
+        "multi-view-table-board-split",
+        "hierarchical-tree-grid",
+        "spreadsheet-keyboard-summary-grid",
+        "split-table-detail-inspector",
+        "grouped-aggregation-subtotals",
+        "server-pagination-select-all",
+        "export-import-column-mapper"
+      ],
+      "rejectedIds": [],
+      "whyNote": "",
+      "neverNote": "",
+      "updatedAt": "2026-11-23T08:19:04.925Z",
+      "winnerId": "saved-views-column-controls"
+    },
+    "app-management-crud": {
+      "selectedIds": [
+        "resource-directory-provision",
+        "workspace-settings-dirty-bar",
+        "plan-usage-quotas-metering",
+        "danger-zone-typed-confirm",
+        "scheduled-jobs-cron-manager"
+      ],
+      "rejectedIds": [],
+      "whyNote": "",
+      "neverNote": "",
+      "updatedAt": "2026-11-23T08:19:46.144Z",
+      "winnerId": "resource-directory-provision"
+    },
+    "rbac-teams-audit": {
+      "selectedIds": [
+        "immutable-audit-trail",
+        "org-tenant-switcher-guard",
+        "sso-saml-scim-setup"
+      ],
+      "rejectedIds": [],
+      "whyNote": "",
+      "neverNote": "",
+      "updatedAt": "2026-11-23T08:20:20.975Z",
+      "winnerId": "immutable-audit-trail"
+    },
+    "work-management-views": {
+      "selectedIds": [
+        "kanban-wip-quick-add",
+        "roadmap-gantt-timeline",
+        "workload-queue-balancer",
+        "sla-countdown-escalation",
+        "subtasks-checklists-blockers",
+        "weekly-resource-calendar"
+      ],
+      "rejectedIds": [],
+      "whyNote": "",
+      "neverNote": "",
+      "updatedAt": "2026-11-23T08:21:52.922Z",
+      "winnerId": "kanban-wip-quick-add"
+    },
+    "search-filter-discoverability": {
+      "selectedIds": [
+        "global-omni-search-tabs",
+        "sticky-section-jump-pills"
+      ],
+      "rejectedIds": [],
+      "whyNote": "",
+      "neverNote": "",
+      "updatedAt": "2026-11-23T08:22:08.572Z",
+      "winnerId": "global-omni-search-tabs"
     }
   },
   "globalRules": {

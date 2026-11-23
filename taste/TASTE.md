@@ -2,7 +2,7 @@
 
 > **Compiled from Taste Lab.** This specification defines structural, spatial, typographic, behavioral, and motion taste. **Colors are intentionally abstracted** to project-level semantic tokens (`--surface-*`, `--ink-*`, `--border-*`, `--accent`, `--danger`) so this taste transfers cleanly across any brand or app.
 
-Last updated: 2026-11-23T06:58:36.697Z
+Last updated: 2026-11-23T08:22:08.572Z
 
 ---
 
@@ -285,6 +285,99 @@ Last updated: 2026-11-23T06:58:36.697Z
   - **Rating Summary + 5-Star Histogram** — *Tabular headline rating · proportional 5→1 bar breakdown* (Tabular average, Proportional bars, Compact 2-col)
   - **Finish / Option Tile Selector** — *Selected label echo · crisp option pills + active check* (All finishes visible, Live selection echo, Active check mark)
   - **Calm Order Confirmation Receipt** — *Success check header · mono order ID · tabular paid total* (Clear confirmation, Mono order reference, Tabular total paid)
+
+### Risk Adjustment & HCC Coding Workspaces
+- **Primary Default:** **Blind QA Overread & Adjudication Split View** — *Chart evidence left · Coder A vs QA Auditor diff right · Concordance + Coach/Adjudicate*
+  - *Traits:* Clear code diff · RAF delta clarity · Coach & adjudicate
+- **Approved Secondary Patterns (1):**
+  - **Chart-Side Non-Leading CDI Query Studio** — *Click ambiguous chart excerpts left · auto-drafts AHIMA-compliant query right* (Click-to-cite excerpt, AHIMA non-leading, Send & hold chart)
+
+### Docs, Evidence & Annotation
+- **Primary Default:** **Multi-Hop Evidence Lineage Bar** — *Claim -> Lab -> Note -> Sign clickable provenance breadcrumb*
+  - *Traits:* End-to-end lineage · Clickable hop details · Mono audit data
+- **Approved Secondary Patterns (1):**
+  - **Pre-Submission Attestation Gate** — *Required check summary · attestation checkbox unlocks Submit* (Clear unlock gate, Zero hidden blockers, Explicit attestation)
+
+### Kinetic Motion & Micro-UI
+- **Primary Default:** **Dynamic Morphing Action Island** — *Fluid layout pill morphing Idle -> Scanning -> Verified*
+  - *Traits:* Smooth layout morph · Respects motion dial · Zero toast spam
+- **Approved Secondary Patterns (8):**
+  - **Shared-Element Spring Pill Bar** — *Motion layoutId gliding surface · tabular count badges* (True layoutId glide, Tabular item counts, Dial-tuned spring)
+  - **Spring Rolling Number Odometer** — *Per-digit vertical roll transitions · mono tabular alignment* (Per-digit roll, Zero width jump, Crisp mono numerals)
+  - **Press-and-Hold Safety Confirm** — *Linear fill progress while holding · instant release cancel* (Zero modal friction, Clear hold progress, Instant cancel)
+  - **Pointer-Tracked Surface Sheen** — *Subtle radial semantic tint following cursor coordinates* (Zero neon slop, Semantic token glow, 60fps pointer track)
+  - **Fluid Quick-Capture Bar Morph** — *1-line bar expands smoothly into inline note composer* (Zero modal context loss, Smooth layout expand, Discoverable C keycap)
+  - **Layered Triage Card Deck** — *3-card physical depth stack · spring cycle through queue* (Depth scale & fade, Single-item focus, Spring deck cycle)
+  - **Spring-Height Kinetic Accordion** — *Smooth height + opacity reveal · + rotates 45° to close* (Smooth auto height, 45° plus-to-cross, Zero abrupt snap)
+  - **Live Clinical Dictation Waveform** — *Toggle Record/Pause · organic animated accent equalizer bars* (Calm live bars, Instant mute toggle, Motion-dial aware)
+
+### Workflows, Timelines & Spatial
+- **Primary Default:** **Compact Status Board + Advance** — *3-column flow · layout-animated 1-click stage progression*
+  - *Traits:* Smooth layout move · Compact 3-col fit · 1-click progression
+- **Approved Secondary Patterns (6):**
+  - **Audit Cycle Gantt Milestone Bar** — *Overlapping phase bars · vertical Today hairline · duration readout* (Today hairline cue, Clickable phases, Clean overlap bars)
+  - **Visual IF / AND / THEN Builder** — *Structured mono condition pills · toggle AND/OR · add action* (Toggleable AND/OR, Mono predicate chips, Zero syntax errors)
+  - **Draggable Split-Pane Divider** — *Real pointer-drag resize handle · live % readout · dbl-click reset* (Real drag resize, Double-click 50/50, Live % feedback)
+  - **Live Reviewer Presence & Follow** — *Collaborator initials · 1-click Follow mode ring + banner* (1-click follow mode, Active ring cue, Compact header fit)
+  - **Time-Travel Snapshot Scrubber** — *Commit-style revision pills · instant change summary preview* (Clear revision pills, Instant diff note, Audit friendly)
+  - **Floating Spatial Tool & Zoom Dock** — *Centered capsule tool switcher + cyclic zoom percentage button* (Icon-only restraint, Hairline divider, Quick zoom toggle)
+
+### Ops Cockpits & Power Search
+- **Primary Default:** **Segmented SLO Uptime Bar** — *12-interval status bars · hover readout for exact uptime %*
+  - *Traits:* Instant health scan · Hover day readout · Semantic color bind
+- **Approved Secondary Patterns (7):**
+  - **Structured Query Pill Bar** — *Inline key:value chips · dashed 1-click suggestion tokens* (1-click token add, Removable chips, Mono query clarity)
+  - **14-Day Volume Heatgrid** — *Color-agnostic accent opacity ramp · hover tabular daily count* (Single-hue opacity, Hover day tooltip, Zero rainbow clutter)
+  - **Interactive Scrubber Spark Tile** — *Tabular headline figure · hoverable bar sparkline updates live* (Live hover scrub, Tabular precision, Compact footprint)
+  - **Keyboard-First Rapid Triage Strip** — *Active left accent bar · J/K/A legend · instant row checkmark* (Left focus rail, Clear J/K/A cue, Instant check state)
+  - **Pinned Saved Views Strip** — *Compact filter icon · active view pill with tabular queue counts* (Tabular view counts, Instant queue pivot, Compact wrap)
+  - **Actionable SLA Escalation Banner** — *Semantic danger frame · expandable inline remediation checklist* (Honest urgency, Inline checklist, Zero panic flash)
+  - **Stacked Progress Breakdown Bar** — *Multi-segment opacity meter · clickable synchronized legend* (Zero pie-chart mess, Clickable legend, Single-hue harmony)
+
+### Advanced Table Views & Grids
+- **Primary Default:** **Saved Views + Column Visibility & Density** — *View tabs · live column picker popover · compact/comfortable toggle*
+  - *Traits:* Saved view tabs · Live column toggle · Density switcher
+- **Approved Secondary Patterns (8):**
+  - **Multi-Condition AND / OR Filter Builder** — *Structured predicate pills · toggle Match AND/OR · 1-click quick rules* (AND/OR toggle, Removable rule pills, Instant live filter)
+  - **Table / Board / Split-View Switcher** — *Single dataset · switch Table, Kanban Board, or Master-Detail Split* (Shared selection, 3 synchronized views, Segmented switcher)
+  - **Hierarchical Tree-Grid with Rollups** — *Expandable parent rows · aggregate latency & spend rollups* (Parent rollups, Aligned columns, Clean indentation)
+  - **Editable Spreadsheet Grid + SUM Footer** — *Direct numeric cell editing · active cell highlight · live SUM footer* (Active cell ring, Instant recalc, Live SUM footer)
+  - **Split Table + Side Detail Inspector** — *Persistent list left · live property inspector & action right* (Zero route jump, Live status mutation, Preserves context)
+  - **Dynamic Group-By + Subtotal Bands** — *Group by Region or Env · collapsible subtotal header rows* (1-click group-by, Tabular subtotals, Clear visual bands)
+  - **Server Pagination + Select-All Banner** — *Rows-per-page selector · Gmail-style “Select all 1,420 records” banner* (Select-all banner, Page-size toggle, Tabular range)
+  - **CSV Export + Import Column Mapper** — *Source-to-field dropdown mapping · live validation status* (1-to-1 field map, Ignore column option, Instant export)
+
+### App Management & Settings
+- **Primary Default:** **App Directory + Inline Provisioner** — *Health pills · expandable inline + New App creation strip*
+  - *Traits:* Inline quick create · Semantic health · Mono slugs
+- **Approved Secondary Patterns (4):**
+  - **Settings Form + Unsaved Changes Bar** — *Dirty-state detection · Reset & Save Changes guard bar* (Dirty-state cue, Instant Reset, Zero surprise saves)
+  - **Usage Quotas & Seat Metering Bars** — *Proportional usage tracks · automatic danger threshold cue* (Tabular ratios, 85%+ threshold cue, Calm visual bars)
+  - **Danger Zone + Typed-Slug Confirmation** — *Semantic danger frame · exact workspace slug unlock* (Exact-slug guard, Clear blast copy, Honest danger hue)
+  - **Scheduled Jobs & Cron Runner** — *Cron schedule mono · Active/Paused toggle · manual Run trigger* (Mono cron spec, Instant pause, 1-click Run Now)
+
+### Teams, RBAC & Audit Logs
+- **Primary Default:** **Audit Trail with Before/After Diff** — *Expandable event rows · semantic red/green state diff*
+  - *Traits:* Actor + IP metadata · Inline JSON diff · Expand on click
+- **Approved Secondary Patterns (2):**
+  - **Tenant Switcher + Prod Safety Guard** — *Multi-org cards · semantic danger frame when Prod is active* (Prod danger frame, Role per tenant, Instant switch)
+  - **SSO / SAML & SCIM Setup Card** — *IdP selector · ACS URL readout · live Test Connection check* (IdP preset tabs, Copyable ACS URL, Live test status)
+
+### Queues, Boards & Work Views
+- **Primary Default:** **WIP-Limited Kanban Board** — *Column WIP counters · over-limit danger border · 1-click advance*
+  - *Traits:* Live WIP alerts · 1-click advance · Clean card hierarchy
+- **Approved Secondary Patterns (5):**
+  - **Roadmap Progress Timeline** — *Month/Quarter zoom · proportional completion fills* (Zoom toggle, Completion fill, Tabular % readout)
+  - **Team Workload Queue Balancer** — *Capacity bars with overload cue · 1-click Auto-Balance* (Overload cue >80%, 1-click rebalance, Tabular % load)
+  - **SLA Countdown & Escalation Queue** — *Breach-risk danger outline · mono countdown · 1-click escalate* (Mono countdown, Risk outline, 1-click escalate)
+  - **Subtask Checklist + Blocker Pill** — *Live completion ratio · explicit Blocked-by dependency badge* (Live ratio count, Explicit blocker, Strike-through done)
+  - **Weekly Release & Shift Grid** — *5-day compact strip · active day focus ring* (5-day overview, Active selection, Clean slot density)
+
+### Search, Facets & Discoverability
+- **Primary Default:** **Scoped Omni-Search with Entity Tabs** — *⌘K input · All/Apps/People/Settings scope pills · live matches*
+  - *Traits:* Entity scope tabs · Instant filter · Mono type tags
+- **Approved Secondary Patterns (1):**
+  - **Inline Section Jump Pill Strip** — *Horizontal TOC pills · instant section focus on long pages* (Zero scroll hunting, Clear active pill, Compact wrap)
 
 ## 4. Non-Negotiable Global Rules
 
