@@ -7,10 +7,15 @@ description: Apply the project's color-agnostic TASTE.md specification, semantic
 
 Use this skill whenever designing, building, or refactoring frontend UI/UX components, dashboards, forms, overlays, or flows.
 
-## 1. Load the Taste Contract First
-Before writing UI code, load the active taste specification in this order:
-1. Check `TASTE.md` or `taste/TASTE.md` in the current project root (project override).
-2. If absent, read the bundled reference `references/TASTE.md` inside this skill folder.
+## 1. Load the Taste Contract & Match Calibrated Components First
+Before writing UI code, discover the exact approved patterns for what the user described:
+1. **Intent → Component Discovery (Preferred when `taste-mcp` or `taste-find` is available):**
+   - Call `match_ui_components({ description: "<what the user wants in UI>", framework: "<target>" })` (or run `bun run find:ui "<description>"`).
+   - Prefer returned matches marked **`PRIMARY`** or **`SELECTED`** in `taste.json`, and strictly obey any **`avoidAntiPatterns`** warnings.
+   - Call `get_component_reference({ id: "<specimenId/variantId>", framework: "<target>" })` (or `bun run find:ui --ref <id>`) to pull the exact reference implementation, interaction state model, and active Craft Dials before implementing.
+2. **Load `TASTE.md`:**
+   - Check `TASTE.md` or `taste/TASTE.md` in the current project root (project override), or call `get_taste_spec`.
+   - If absent, read the bundled reference `references/TASTE.md` inside this skill folder.
 - Follow the calibrated **Craft Dials** (density, base radius, concentric nesting `inner = max(0, outer - padding)`, border strength, shadow depth, typography pairing, tabular numerals, press compression, motion physics).
 - Honor the **Primary Default** and **Approved Secondary Patterns** recorded in `TASTE.md`.
 - Strictly obey every **Explicitly Rejected** and **Never Do This** rule.
