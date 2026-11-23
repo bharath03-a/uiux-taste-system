@@ -78,7 +78,12 @@ export type SpecimenId =
   | 'navigation-headers'
   | 'badges-avatars-chips'
   | 'heroes-landing-blocks'
-  | 'commerce-checkout';
+  | 'commerce-checkout'
+  | 'risk-adjustment-coding'
+  | 'document-annotation-review'
+  | 'micro-interactions-motion'
+  | 'canvas-spatial-workflows'
+  | 'dashboards-ops-cockpits';
 
 export interface VariantMeta {
   id: string;
@@ -90,7 +95,7 @@ export interface VariantMeta {
 
 export interface SpecimenDefinition {
   id: SpecimenId;
-  batch: 1 | 2 | 3 | 4 | 5;
+  batch: 1 | 2 | 3 | 4 | 5 | 6;
   title: string;
   subtitle: string;
   question: string;

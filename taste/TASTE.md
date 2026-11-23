@@ -2,7 +2,7 @@
 
 > **Compiled from Taste Lab.** This specification defines structural, spatial, typographic, behavioral, and motion taste. **Colors are intentionally abstracted** to project-level semantic tokens (`--surface-*`, `--ink-*`, `--border-*`, `--accent`, `--danger`) so this taste transfers cleanly across any brand or app.
 
-Last updated: 2026-11-23T06:19:18.090Z
+Last updated: 2026-11-23T06:58:36.697Z
 
 ---
 
@@ -225,6 +225,66 @@ Last updated: 2026-11-23T06:19:18.090Z
   - **Horizontal Conversion Funnel** — *Proportional stage bars · tabular totals + step conversion %* (Clear drop-off math, Proportional tracks, Zero chart junk)
   - **Ranked Horizontal Bar List** — *Background proportional fill · label left · tabular value right* (Ultra-clean analytics UI, Inline fill bar, Right-aligned totals)
   - **Period-over-Period Comparison Card** — *Current vs Previous side-by-side · directional delta badge* (Instant period context, Clear directional delta, Balanced 2-col layout)
+
+### Auth, Security & Access Control
+- **Primary Default:** **Clean OAuth + Email Sign-In Card** — *Social row · crisp divider · inline password reveal*
+  - *Traits:* OAuth + password balance · Inline eye toggle · Zero bloat
+- **Approved Secondary Patterns (8):**
+  - **Passkey / Magic Link Switcher** — *Segmented passwordless toggle · instant Touch ID CTA* (Passwordless native, Clean segmented toggle, Clear trust copy)
+  - **6-Digit Mono OTP Verification** — *6 crisp tabular boxes · active accent ring · paste-friendly* (Tabular mono boxes, 1-click demo fill, Clear progress count)
+  - **Live Password Strength + Rules** — *4-segment meter · live rule checklist · honest score* (4-step bar meter, Live rule checks, Zero password shaming)
+  - **Active Device Sessions + Revoke** — *Device icon · location/time · Current badge vs Revoke* (Clear current session, 1-click revoke, Compact row scan)
+  - **Compact RBAC Permission Matrix** — *Hairline table · tactile check cells · role columns* (Fast role compare, Crisp check cells, Clean hairline table)
+  - **Enterprise SSO Domain Gate** — *Work domain input · live IdP detection feedback* (Live IdP match, Mono domain input, Zero confusion)
+  - **Calm Compact Cookie Consent** — *Honest Essential Only vs Accept All · zero dark patterns* (Zero dark patterns, Compact footprint, Instant settle)
+  - **Type-to-Confirm Danger Zone** — *Danger hairline frame · exact slug match unlocks Delete* (Prevents misclicks, Mono confirmation slug, Disabled until match)
+
+### Navigation, Headers & Pagination
+- **Primary Default:** **Crisp Single-Row Navbar** — *Brand left · quiet nav links · single primary CTA*
+  - *Traits:* Single primary CTA · Clean active pill · Zero link clutter
+- **Approved Secondary Patterns (8):**
+  - **Collapsible Overflow Breadcrumb** — *Middle segments fold into ··· · 1-click expand* (Preserves leaf title, 1-click expand, Zero wrap mess)
+  - **Page Header + Action Pair** — *Title + live meta left · Secondary + Primary CTA right* (Balanced action pair, Quiet live meta, Clean wrap on 390px)
+  - **Mobile Bottom Tab Bar** — *4 thumb-reachable slots · icon + tight label · active tint* (Thumb-zone native, 4-item restraint, Clear active tint)
+  - **Compact Pagination + Rows Select** — *Page size picker · tabular Page X / Y · Prev/Next buttons* (Tabular page count, Rows-per-page select, Compact footprint)
+  - **Collapsible File / Folder Tree** — *1px vertical indent guide · mono leaf items · active fill* (1px guide line, Mono file labels, Clean toggle)
+  - **Docs Table-of-Contents Rail** — *Stepped H2/H3 SVG track · spring Glide & Trail indicator* (Stepped SVG glide rail, Glide vs Trail modes, Pointer hover ghost)
+  - **Compact Org / Tenant Switcher** — *Monogram badge · active org name · instant switch pills* (Monogram identity, Fast org switch, Compact chrome)
+  - **Inline Search Bar + ⌘K Keycap** — *Bordered search field · right-aligned mono shortcut cap* (Discoverable ⌘K, Clean mono keycap, Zero heavy chrome)
+
+### Badges, Avatars, Chips & Keycaps
+- **Primary Default:** **Interactive Avatar Stack (+N)** — *Overlapping rings · click +N to fan out cleanly*
+  - *Traits:* Surface-matched rings · Tabular +N counter · Smooth fan-out
+- **Approved Secondary Patterns (8):**
+  - **Restrained Semantic Status Pills** — *Hairline/tinted pills · calm dot · mono version tag* (Contrast verified, Calm status dot, Mono version pill)
+  - **Toggleable Multi-Select Chips** — *Pill chips · checkmark + accent fill when active* (Instant visual state, Checkmark clarity, Compact wrap)
+  - **Inline Progress Meter Pill** — *Capsule badge · embedded mini progress track + tabular %* (Compact progress, Tabular percentage, Zero layout jump)
+  - **Directional Trend Delta Chips** — *Up/Down arrow · tabular % · semantic success/danger ink* (Tabular mono deltas, Directional icons, Accessible contrast)
+  - **Tiered Role & Verification Tags** — *Solid Owner · bordered Maintainer · quiet Guest hierarchy* (3-tier visual weight, Zero color overload, Instant role scan)
+  - **1-Click Copyable Mono ID Chip** — *Truncated trace/order ID · inline copy -> check morph* (Overflow-safe truncate, Inline check receipt, Mono precision)
+  - **Multi-State Live Sync Pill** — *Cycles Synced · Syncing · Offline cleanly in one capsule* (Single-slot status, Honest offline alert, Subtle spinner)
+  - **Dismissible Mono Tag Strip** — *Hairline chips · crisp X button · 1-click reset* (Crisp remove target, Mono tag rhythm, Easy reset)
+
+### Heroes, Landing & Marketing Blocks
+- **Primary Default:** **Editorial Centered Hero** — *Tight display headline · calm subtitle · 1 primary CTA*
+  - *Traits:* Zero slop badges · Balanced text wrap · Clear CTA hierarchy
+- **Approved Secondary Patterns (2):**
+  - **Asymmetric Split Product Hero** — *Value prop left · live product telemetry preview right* (Real product proof, Responsive 2-col, Focused copy)
+  - **Hairline FAQ Disclosure Block** — *Single-card divided accordion · smooth chevron rotation* (Single-container frame, Smooth chevron flip, Clean prose width)
+
+### Commerce, Cart & Checkout UX
+- **Primary Default:** **Clean Product Card + Quick Add** — *Locked media slot · title + tabular price · 1-tap Quick Add*
+  - *Traits:* Tabular price align · 1-tap bag feedback · Zero badge clutter
+- **Approved Secondary Patterns (9):**
+  - **Compact Cart Row + Qty Stepper** — *Item + live subtotal left · bounded − N + stepper right* (Live tabular subtotal, Compact stepper, Clean touch targets)
+  - **Order Summary + Live Promo Code** — *Inline promo apply/remove · hairline subtotal/discount/total* (Honest discount row, Mono currency align, 1-click apply/remove)
+  - **Tactile Shipping Speed Cards** — *Full-card click target · active accent border · aligned cost* (Clear active ring, Right-aligned cost, Large click target)
+  - **Segmented Payment Method Switcher** — *Card / Wallet / Invoice tabs · contextual summary below* (Zero form overload, B2B Invoice ready, Crisp segmented rail)
+  - **4-Stage Order Fulfillment Bar** — *4 crisp progress segments · active milestone labels* (Split-second status, Clean 4-bar track, Responsive labels)
+  - **Honest Stock / Availability Strip** — *Semantic dot · clear remaining count · zero fake urgency* (Honest inventory copy, Clear out-of-stock, Zero fake countdown)
+  - **Rating Summary + 5-Star Histogram** — *Tabular headline rating · proportional 5→1 bar breakdown* (Tabular average, Proportional bars, Compact 2-col)
+  - **Finish / Option Tile Selector** — *Selected label echo · crisp option pills + active check* (All finishes visible, Live selection echo, Active check mark)
+  - **Calm Order Confirmation Receipt** — *Success check header · mono order ID · tabular paid total* (Clear confirmation, Mono order reference, Tabular total paid)
 
 ## 4. Non-Negotiable Global Rules
 

@@ -24,6 +24,11 @@ import { NavigationHeadersSpecimen } from '../specimens/NavigationHeadersSpecime
 import { BadgesAvatarsChipsSpecimen } from '../specimens/BadgesAvatarsChipsSpecimen';
 import { HeroesLandingSpecimen } from '../specimens/HeroesLandingSpecimen';
 import { CommerceCheckoutSpecimen } from '../specimens/CommerceCheckoutSpecimen';
+import { RiskAdjustmentCodingSpecimen } from '../specimens/RiskAdjustmentCodingSpecimen';
+import { DocumentAnnotationSpecimen } from '../specimens/DocumentAnnotationSpecimen';
+import { MicroInteractionsMotionSpecimen } from '../specimens/MicroInteractionsMotionSpecimen';
+import { CanvasWorkflowsSpecimen } from '../specimens/CanvasWorkflowsSpecimen';
+import { OpsCockpitsSpecimen } from '../specimens/OpsCockpitsSpecimen';
 import type { SpecimenContext, SpecimenDecision, SpecimenDefinition } from '../types/taste';
 
 interface SpecimenStageProps {
@@ -107,6 +112,16 @@ export function SpecimenStage({
         return <HeroesLandingSpecimen variantId={variantId} ctx={ctx} />;
       case 'commerce-checkout':
         return <CommerceCheckoutSpecimen variantId={variantId} ctx={ctx} />;
+      case 'risk-adjustment-coding':
+        return <RiskAdjustmentCodingSpecimen variantId={variantId} ctx={ctx} />;
+      case 'document-annotation-review':
+        return <DocumentAnnotationSpecimen variantId={variantId} ctx={ctx} />;
+      case 'micro-interactions-motion':
+        return <MicroInteractionsMotionSpecimen variantId={variantId} ctx={ctx} />;
+      case 'canvas-spatial-workflows':
+        return <CanvasWorkflowsSpecimen variantId={variantId} ctx={ctx} />;
+      case 'dashboards-ops-cockpits':
+        return <OpsCockpitsSpecimen variantId={variantId} ctx={ctx} />;
     }
   };
 

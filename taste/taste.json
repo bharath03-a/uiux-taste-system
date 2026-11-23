@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "updatedAt": "2026-11-23T06:19:18.090Z",
+  "updatedAt": "2026-11-23T06:58:36.697Z",
   "philosophy": {
     "colorAbstracted": true,
     "summary": "Colors are project-level semantic tokens. Taste governs geometry, surfaces, typography, spacing rhythm, motion physics, and interaction ergonomics."
@@ -231,6 +231,7 @@
       "updatedAt": "2026-11-23T05:55:01.976Z"
     },
     "cards-metrics": {
+      "winnerId": "kpi-sparkline-card",
       "selectedIds": [
         "kpi-sparkline-card",
         "selectable-plan-card",
@@ -245,10 +246,10 @@
       "rejectedIds": [],
       "whyNote": "",
       "neverNote": "",
-      "updatedAt": "2026-11-23T06:14:55.843Z",
-      "winnerId": "kpi-sparkline-card"
+      "updatedAt": "2026-11-23T06:14:55.843Z"
     },
     "onboarding-wizards": {
+      "winnerId": "horizontal-numbered-stepper",
       "selectedIds": [
         "horizontal-numbered-stepper",
         "vertical-rail-stepper",
@@ -262,10 +263,10 @@
       "rejectedIds": [],
       "whyNote": "",
       "neverNote": "",
-      "updatedAt": "2026-11-23T06:16:10.252Z",
-      "winnerId": "horizontal-numbered-stepper"
+      "updatedAt": "2026-11-23T06:16:10.252Z"
     },
     "rich-pickers-uploads": {
+      "winnerId": "drag-drop-file-uploader",
       "selectedIds": [
         "drag-drop-file-uploader",
         "avatar-media-uploader",
@@ -281,10 +282,10 @@
       "rejectedIds": [],
       "whyNote": "",
       "neverNote": "",
-      "updatedAt": "2026-11-23T06:17:59.478Z",
-      "winnerId": "drag-drop-file-uploader"
+      "updatedAt": "2026-11-23T06:17:59.478Z"
     },
     "lists-feeds-details": {
+      "winnerId": "settings-section-rows",
       "selectedIds": [
         "settings-section-rows",
         "toggle-preference-list",
@@ -300,10 +301,10 @@
       "rejectedIds": [],
       "whyNote": "",
       "neverNote": "",
-      "updatedAt": "2026-11-23T06:18:45.396Z",
-      "winnerId": "settings-section-rows"
+      "updatedAt": "2026-11-23T06:18:45.396Z"
     },
     "charts-analytics": {
+      "winnerId": "bar-chart-hover-tooltip",
       "selectedIds": [
         "bar-chart-hover-tooltip",
         "area-trend-chart",
@@ -318,8 +319,92 @@
       "rejectedIds": [],
       "whyNote": "",
       "neverNote": "",
-      "updatedAt": "2026-11-23T06:19:18.090Z",
-      "winnerId": "bar-chart-hover-tooltip"
+      "updatedAt": "2026-11-23T06:19:18.090Z"
+    },
+    "auth-security": {
+      "selectedIds": [
+        "minimal-signin-card",
+        "magic-link-passkey",
+        "otp-six-digit",
+        "password-strength-meter",
+        "active-sessions-list",
+        "rbac-permission-matrix",
+        "sso-enterprise-gate",
+        "cookie-consent-compact",
+        "danger-zone-confirm"
+      ],
+      "rejectedIds": [],
+      "whyNote": "",
+      "neverNote": "",
+      "updatedAt": "2026-11-23T06:53:41.628Z",
+      "winnerId": "minimal-signin-card"
+    },
+    "navigation-headers": {
+      "selectedIds": [
+        "crisp-marketing-navbar",
+        "breadcrumb-overflow-trail",
+        "sticky-page-header-actions",
+        "mobile-bottom-tab-bar",
+        "pagination-with-pagesize",
+        "tree-folder-sidebar",
+        "docs-toc-anchor-rail",
+        "workspace-org-switcher",
+        "global-search-header"
+      ],
+      "rejectedIds": [],
+      "whyNote": "",
+      "neverNote": "",
+      "updatedAt": "2026-11-23T06:55:42.029Z",
+      "winnerId": "crisp-marketing-navbar"
+    },
+    "badges-avatars-chips": {
+      "selectedIds": [
+        "avatar-stack-overflow",
+        "semantic-status-badges",
+        "interactive-filter-chips",
+        "progress-pill-badge",
+        "metric-delta-chips",
+        "verified-role-tags",
+        "copyable-mono-id-chip",
+        "live-sync-status-pill",
+        "removable-tag-strip"
+      ],
+      "rejectedIds": [],
+      "whyNote": "",
+      "neverNote": "",
+      "updatedAt": "2026-11-23T06:57:17.145Z",
+      "winnerId": "avatar-stack-overflow"
+    },
+    "heroes-landing-blocks": {
+      "selectedIds": [
+        "editorial-centered-hero",
+        "split-product-hero",
+        "faq-accordion-block"
+      ],
+      "rejectedIds": [],
+      "whyNote": "",
+      "neverNote": "",
+      "updatedAt": "2026-11-23T06:57:57.794Z",
+      "winnerId": "editorial-centered-hero"
+    },
+    "commerce-checkout": {
+      "selectedIds": [
+        "product-card-quick-add",
+        "cart-line-items",
+        "promo-order-summary",
+        "shipping-speed-selector",
+        "payment-method-tabs",
+        "order-tracking-stepper",
+        "inventory-stock-indicator",
+        "review-histogram-summary",
+        "variant-swatch-selector",
+        "order-confirmed-receipt"
+      ],
+      "rejectedIds": [],
+      "whyNote": "",
+      "neverNote": "",
+      "updatedAt": "2026-11-23T06:58:36.697Z",
+      "winnerId": "product-card-quick-add"
     }
   },
   "globalRules": {

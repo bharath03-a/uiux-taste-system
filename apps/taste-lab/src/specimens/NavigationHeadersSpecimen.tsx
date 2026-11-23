@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useId, useLayoutEffect, useRef, useState } from 'react';
+import { motion } from 'motion/react';
 import {
   ChevronDown,
   ChevronLeft,
@@ -384,39 +385,259 @@ function TreeFolderSidebar({ ctx }: { ctx: SpecimenContext }) {
   );
 }
 
+interface TocItem {
+  id: string;
+  label: string;
+  depth: 0 | 1;
+}
+
+interface MeasuredSlot {
+  top: number;
+  height: number;
+}
+
 function DocsTocAnchorRail({ ctx }: { ctx: SpecimenContext }) {
-  const [active, setActive] = useState('Contrast Math');
-  const sections = ['Overview', 'Semantic Tokens', 'Contrast Math', ctx.breakUi ? 'Multi-Framework Exports' : 'MCP Setup'];
+  const [activeId, setActiveId] = useState('contrast');
+  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
+  const [railMode, setRailMode] = useState<'glide' | 'trail'>('glide');
+  const listRef = useRef<HTMLDivElement>(null);
+  const itemRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const [slots, setSlots] = useState<MeasuredSlot[]>([]);
+  const [svgHeight, setSvgHeight] = useState(140);
+  const uid = useId().replace(/:/g, '');
+
+  const sections: TocItem[] = [
+    { id: 'overview', label: 'Overview', depth: 0 },
+    { id: 'tokens', label: 'Semantic Tokens', depth: 0 },
+    { id: 'contrast', label: 'Contrast Math', depth: 1 },
+    {
+      id: 'apca',
+      label: ctx.breakUi ? 'APCA W3 Perceptual Lightness (Lc)' : 'APCA W3 Lc',
+      depth: 1,
+    },
+    {
+      id: 'mcp',
+      label: ctx.breakUi ? 'Multi-Framework Exports & MCP' : 'MCP Setup',
+      depth: 0,
+    },
+  ];
+
+  const activeIdx = Math.max(
+    0,
+    sections.findIndex((s) => s.id === activeId),
+  );
+
+  useLayoutEffect(() => {
+    const container = listRef.current;
+    if (!container) return;
+
+    const measure = () => {
+      const next: MeasuredSlot[] = sections.map((_, i) => {
+        const el = itemRefs.current[i];
+        return el ? { top: el.offsetTop, height: el.offsetHeight } : { top: i * 26, height: 26 };
+      });
+      setSlots(next);
+      setSvgHeight(Math.max(container.offsetHeight, 120));
+    };
+
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(container);
+    return () => ro.disconnect();
+  }, [ctx.breakUi, ctx.mobilePreview, ctx.dials.density, ctx.dials.fontPairing]);
+
+  // Build continuous stepped SVG rail following H2 (x=3) -> diagonal chamfer -> H3 (x=13)
+  const X0 = 3;
+  const X1 = 13;
+  const INSET = 4;
+
+  const pathD = (() => {
+    if (slots.length === 0) return '';
+    const cmds: string[] = [];
+    slots.forEach((slot, i) => {
+      const x = sections[i]?.depth === 1 ? X1 : X0;
+      const yTop = slot.top + INSET;
+      const yBot = slot.top + Math.max(slot.height - INSET, INSET + 6);
+      if (i === 0) {
+        cmds.push(`M ${x} ${yTop}`);
+      } else {
+        cmds.push(`L ${x} ${yTop}`);
+      }
+      cmds.push(`L ${x} ${yBot}`);
+    });
+    return cmds.join(' ');
+  })();
+
+  const activeSlot = slots[activeIdx] ?? { top: activeIdx * 26, height: 26 };
+  const firstSlot = slots[0] ?? { top: 0, height: 26 };
+  const hoverSlot = hoveredIdx !== null ? slots[hoveredIdx] ?? activeSlot : activeSlot;
+
+  const activeClipY = railMode === 'trail' ? firstSlot.top + 2 : activeSlot.top + 2;
+  const activeClipH =
+    railMode === 'trail'
+      ? Math.max(10, activeSlot.top + activeSlot.height - 2 - (firstSlot.top + 2))
+      : Math.max(10, activeSlot.height - 4);
+
+  const hoverClipY = hoverSlot.top + 2;
+  const hoverClipH = Math.max(10, hoverSlot.height - 4);
+
+  const railTransition =
+    ctx.dials.motionMode === 'instant'
+      ? { duration: 0 }
+      : ctx.dials.motionMode === 'spring'
+        ? {
+            type: 'spring' as const,
+            stiffness: ctx.dials.springStiffness,
+            damping: ctx.dials.springDamping,
+            mass: 0.65,
+          }
+        : {
+            duration: ctx.dials.durationMs / 1000,
+            ease: [0.22, 1, 0.36, 1] as const,
+          };
+
+  const hoverTransition =
+    ctx.dials.motionMode === 'instant'
+      ? { duration: 0 }
+      : { type: 'spring' as const, stiffness: 520, damping: 38, mass: 0.5 };
+
+  const activeClipId = `toc-active-${uid}`;
+  const hoverClipId = `toc-hover-${uid}`;
+
   return (
     <div
-      className="flex flex-col gap-1 p-3"
+      className="flex flex-col gap-1.5 p-3"
       style={{
         background: 'var(--surface-1)',
         borderRadius: 'var(--dial-radius)',
         border: '1px solid var(--border-subtle)',
       }}
     >
-      <div
-        className="mb-1 text-[10px] font-semibold uppercase tracking-[0.06em]"
-        style={{ color: 'var(--ink-3)', fontFamily: 'var(--dial-font-mono)' }}
-      >
-        On this page
-      </div>
-      <div className="flex flex-col" style={{ borderLeft: '1px solid var(--border-subtle)' }}>
-        {sections.map((s) => {
-          const isAct = active === s;
-          return (
+      <div className="mb-0.5 flex items-center justify-between gap-2">
+        <span
+          className="text-[10px] font-semibold uppercase tracking-[0.06em]"
+          style={{ color: 'var(--ink-3)', fontFamily: 'var(--dial-font-mono)' }}
+        >
+          On this page
+        </span>
+        <div
+          className="inline-flex rounded-md p-0.5 text-[10px] font-medium"
+          style={{
+            background: 'var(--surface-0)',
+            border: '1px solid var(--border-subtle)',
+          }}
+        >
+          {(['glide', 'trail'] as const).map((m) => (
             <button
-              key={s}
+              key={m}
               type="button"
-              onClick={() => setActive(s)}
-              className="-ml-px py-1 pl-3 text-left text-[11.5px] font-medium"
+              onClick={() => setRailMode(m)}
+              className="rounded px-1.5 py-0.5 capitalize transition-colors"
               style={{
-                borderLeft: `2px solid ${isAct ? 'var(--accent)' : 'transparent'}`,
-                color: isAct ? 'var(--ink-1)' : 'var(--ink-3)',
+                background: railMode === m ? 'var(--surface-2)' : 'transparent',
+                color: railMode === m ? 'var(--ink-1)' : 'var(--ink-3)',
               }}
             >
-              {s}
+              {m}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div
+        ref={listRef}
+        className="relative flex flex-col"
+        onMouseLeave={() => setHoveredIdx(null)}
+      >
+        {pathD && (
+          <svg
+            width={18}
+            height={svgHeight}
+            aria-hidden="true"
+            className="pointer-events-none absolute top-0 left-0 overflow-visible"
+          >
+            <defs>
+              <clipPath id={hoverClipId}>
+                <motion.rect
+                  x={-2}
+                  width={22}
+                  initial={false}
+                  animate={{ y: hoverClipY, height: hoverClipH }}
+                  transition={hoverTransition}
+                />
+              </clipPath>
+              <clipPath id={activeClipId}>
+                <motion.rect
+                  x={-2}
+                  width={22}
+                  initial={false}
+                  animate={{ y: activeClipY, height: activeClipH }}
+                  transition={railTransition}
+                />
+              </clipPath>
+            </defs>
+
+            {/* Continuous stepped base track */}
+            <path
+              d={pathD}
+              fill="none"
+              stroke="var(--border-subtle)"
+              strokeWidth={1.5}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+
+            {/* Subtle hover ghost gliding along the stepped track */}
+            <path
+              d={pathD}
+              fill="none"
+              stroke="var(--border-strong)"
+              strokeWidth={2}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              clipPath={`url(#${hoverClipId})`}
+              style={{
+                opacity: hoveredIdx !== null && hoveredIdx !== activeIdx ? 0.85 : 0,
+                transition: 'opacity 140ms ease',
+              }}
+            />
+
+            {/* Spring-animated active accent rail gliding around diagonal bends */}
+            <path
+              d={pathD}
+              fill="none"
+              stroke="var(--accent)"
+              strokeWidth={2.25}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              clipPath={`url(#${activeClipId})`}
+            />
+          </svg>
+        )}
+
+        {sections.map((s, idx) => {
+          const isAct = idx === activeIdx;
+          const isPast = railMode === 'trail' && idx < activeIdx;
+          return (
+            <button
+              key={s.id}
+              ref={(el) => {
+                itemRefs.current[idx] = el;
+              }}
+              type="button"
+              onClick={() => setActiveId(s.id)}
+              onMouseEnter={() => setHoveredIdx(idx)}
+              className={`${s.depth === 1 ? 'pl-7' : 'pl-5'} py-1 text-left text-[11.5px] font-medium leading-snug transition-colors duration-150`}
+              style={{
+                color: isAct ? 'var(--ink-1)' : isPast ? 'var(--ink-2)' : 'var(--ink-3)',
+              }}
+            >
+              <span
+                className="inline-block transition-transform duration-150"
+                style={{ transform: isAct ? 'translateX(2px)' : 'translateX(0px)' }}
+              >
+                {s.label}
+              </span>
             </button>
           );
         })}

@@ -10,29 +10,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: oven-sh/setup-bun@v2
         with:
-          node-version: 22
-          cache: npm
-          cache-dependency-path: apps/taste-lab/package-lock.json
-      - name: Install Taste Lab dependencies
-        run: npm --prefix apps/taste-lab ci
+          bun-version: latest
+      - name: Install Taste Lab dependencies (Bun)
+        run: bun install --cwd apps/taste-lab
       - name: Typecheck
-        run: npm run typecheck
+        run: bun run typecheck
       - name: Build Taste Lab
-        run: npm run build
+        run: bun run build
       - name: Strict WCAG/APCA Contrast & Taste Lint
-        run: npm run lint:taste -- --strict
-      - name: Smoke-test Multi-Framework Token Generator
+        run: bun run lint:taste -- --strict
+      - name: Smoke-test Multi-Framework Token Generator (Bun)
         run: |
-          node packages/taste-linter/bin/taste-tokens.mjs --brand "#2563eb" --format tailwind-v4 > /dev/null
-          node packages/taste-linter/bin/taste-tokens.mjs --brand "#10b981" --format flutter > /dev/null
-          node packages/taste-linter/bin/taste-tokens.mjs --brand "#7c3aed" --format swiftui > /dev/null
-          node packages/taste-linter/bin/taste-tokens.mjs --scale "#2563eb" --json > /dev/null
-      - name: Smoke-test Local Taste MCP Server
+          bun packages/taste-linter/bin/taste-tokens.mjs --brand "#2563eb" --format tailwind-v4 > /dev/null
+          bun packages/taste-linter/bin/taste-tokens.mjs --brand "#10b981" --format flutter > /dev/null
+          bun packages/taste-linter/bin/taste-tokens.mjs --brand "#7c3aed" --format swiftui > /dev/null
+          bun packages/taste-linter/bin/taste-tokens.mjs --scale "#2563eb" --json > /dev/null
+      - name: Smoke-test Local Taste MCP Server (Bun)
         run: |
           printf '%s\n%s\n%s\n' \
             '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2024-11-05","capabilities":{},"clientInfo":{"name":"ci","version":"1.0"}}}' \
             '{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}' \
             '{"jsonrpc":"2.0","id":3,"method":"tools/call","params":{"name":"check_contrast","arguments":{"foreground":"#10b981","background":"#ffffff"}}}' \
-            | node packages/taste-mcp/server.mjs | grep -q 'suggestedForeground'
+            | bun packages/taste-mcp/server.mjs | grep -q 'suggestedForeground'
