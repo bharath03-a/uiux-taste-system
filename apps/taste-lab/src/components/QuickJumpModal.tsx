@@ -125,7 +125,7 @@ export function QuickJumpModal({ open, onClose, onJump }: QuickJumpModalProps) {
                 commit();
               }
             }}
-            placeholder="Jump to any of 30 categories or 270+ prototypes (e.g. Risk Adjustment, TOC, Odometer, Split)…"
+            placeholder="Jump to any of 35 categories or 320+ prototypes (e.g. Saved Views, RBAC, Kanban, Secrets, TOC)…"
             className="min-w-0 flex-1 bg-transparent text-[13px] outline-none"
             style={{ color: 'var(--ink-1)' }}
           />

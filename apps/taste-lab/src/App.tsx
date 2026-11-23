@@ -17,6 +17,7 @@ import {
   FlaskConical,
   FormInput,
   Gauge,
+  Kanban,
   Layers,
   LayoutGrid,
   LayoutPanelLeft,
@@ -27,6 +28,8 @@ import {
   MousePointerClick,
   PanelTop,
   Search,
+  Settings2,
+  Shield,
   ShieldCheck,
   ShoppingBag,
   Sliders,
@@ -35,6 +38,7 @@ import {
   Sparkles,
   Stethoscope,
   Table2,
+  TableProperties,
   Tags,
   Type,
   Wand2,
@@ -48,6 +52,7 @@ import { useTasteStore } from './hooks/useTasteStore';
 import { auditThemeTokens } from './lib/contrast';
 import { DialPanel } from './components/DialPanel';
 import { SpecimenStage } from './components/SpecimenStage';
+import { CatalogGallery } from './components/CatalogGallery';
 import { CompileModal } from './components/CompileModal';
 import { ContrastModal } from './components/ContrastModal';
 import { QuickJumpModal } from './components/QuickJumpModal';
@@ -84,15 +89,21 @@ const SPECIMEN_ICONS: Record<SpecimenId, React.ComponentType<{ className?: strin
   'micro-interactions-motion': Zap,
   'canvas-spatial-workflows': Workflow,
   'dashboards-ops-cockpits': Gauge,
+  'advanced-table-views': TableProperties,
+  'app-management-crud': Settings2,
+  'rbac-teams-audit': Shield,
+  'work-management-views': Kanban,
+  'search-filter-discoverability': Search,
 };
 
-const BATCH_META: { batch: 1 | 2 | 3 | 4 | 5 | 6; label: string; short: string }[] = [
-  { batch: 1, label: 'Batch 1 · Foundations', short: 'B1' },
-  { batch: 2, label: 'Batch 2 · UX & Overlays', short: 'B2' },
-  { batch: 3, label: 'Batch 3 · Data & AI-Native', short: 'B3' },
-  { batch: 4, label: 'Batch 4 · Generic App UX', short: 'B4' },
-  { batch: 5, label: 'Batch 5 · Auth, Flows & UI', short: 'B5' },
+const BATCH_META: { batch: 1 | 2 | 3 | 4 | 5 | 6 | 7; label: string; short: string }[] = [
+  { batch: 7, label: 'Batch 7 · App Mgmt & Tables', short: 'B7' },
   { batch: 6, label: 'Batch 6 · Risk Adj & Craft', short: 'B6' },
+  { batch: 5, label: 'Batch 5 · Auth, Flows & UI', short: 'B5' },
+  { batch: 4, label: 'Batch 4 · Generic App UX', short: 'B4' },
+  { batch: 3, label: 'Batch 3 · Data & AI-Native', short: 'B3' },
+  { batch: 2, label: 'Batch 2 · UX & Overlays', short: 'B2' },
+  { batch: 1, label: 'Batch 1 · Foundations', short: 'B1' },
 ];
 
 export function App() {
@@ -108,7 +119,8 @@ export function App() {
     writeTasteMarkdown,
   } = useTasteStore();
 
-  const [activeId, setActiveId] = useState<SpecimenId>('risk-adjustment-coding');
+  const [viewMode, setViewMode] = useState<'catalog' | 'stage'>('catalog');
+  const [activeId, setActiveId] = useState<SpecimenId>('advanced-table-views');
   const [breakUi, setBreakUi] = useState(false);
   const [mobilePreview, setMobilePreview] = useState(false);
   const [showDials, setShowDials] = useState(true);
@@ -116,7 +128,7 @@ export function App() {
   const [contrastOpen, setContrastOpen] = useState(false);
   const [quickJumpOpen, setQuickJumpOpen] = useState(false);
   const [sidebarQuery, setSidebarQuery] = useState('');
-  const [batchFilter, setBatchFilter] = useState<'all' | 'todo' | 1 | 2 | 3 | 4 | 5 | 6>('all');
+  const [batchFilter, setBatchFilter] = useState<'all' | 'todo' | 1 | 2 | 3 | 4 | 5 | 6 | 7>('all');
   const [collapsedBatches, setCollapsedBatches] = useState<Record<number, boolean>>({});
   const [highlightedVariantId, setHighlightedVariantId] = useState<string | null>(null);
   const mainStageRef = useRef<HTMLElement>(null);
@@ -134,6 +146,7 @@ export function App() {
   }, []);
 
   const handleJump = useCallback((specimenId: SpecimenId, variantId?: string) => {
+    setViewMode('stage');
     setActiveId(specimenId);
     setBatchFilter((prev) => {
       if (prev === 'all' || prev === 'todo') return prev;
@@ -165,6 +178,13 @@ export function App() {
         mainStageRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
       }, 20);
     }
+  }, []);
+
+  const openCatalog = useCallback(() => {
+    setViewMode('catalog');
+    window.setTimeout(() => {
+      mainStageRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 20);
   }, []);
 
   const activeTheme = PROJECT_THEMES.find((t) => t.id === themeId) ?? PROJECT_THEMES[0];
@@ -251,9 +271,14 @@ export function App() {
           borderBottom: '1px solid var(--border-subtle)',
         }}
       >
-        {/* Brand + Sync status + Quick Jump Trigger */}
-        <div className="flex min-w-0 items-center gap-2.5">
-          <div className="flex items-center gap-2">
+        {/* Brand + Browse All + Quick Jump Trigger */}
+        <div className="flex min-w-0 items-center gap-2">
+          <button
+            type="button"
+            onClick={openCatalog}
+            className="flex items-center gap-2 rounded-lg pr-1 text-left"
+            title="Open Component Directory"
+          >
             <span
               className="inline-flex h-7 w-7 items-center justify-center rounded-lg"
               style={{ background: 'var(--accent)', color: 'var(--accent-ink)' }}
@@ -263,12 +288,26 @@ export function App() {
             <span className="text-[13.5px] font-semibold tracking-tight" style={{ color: 'var(--ink-1)' }}>
               Taste Lab
             </span>
-          </div>
+          </button>
+
+          <button
+            type="button"
+            onClick={openCatalog}
+            className="craft-pressable craft-focus inline-flex h-8 items-center gap-1.5 rounded-lg px-2.5 text-[12px] font-medium"
+            style={{
+              background: viewMode === 'catalog' ? 'var(--accent-soft)' : 'var(--surface-0)',
+              color: 'var(--ink-1)',
+              border: `1px solid ${viewMode === 'catalog' ? 'var(--accent)' : 'var(--border-subtle)'}`,
+            }}
+          >
+            <LayoutGrid className="h-3.5 w-3.5" />
+            <span className="hidden md:inline">Browse All ({SPECIMENS.length})</span>
+          </button>
 
           <button
             type="button"
             onClick={() => setQuickJumpOpen(true)}
-            title="Jump to any of 30 categories or 270+ prototypes (⌘K / Ctrl+K)"
+            title="Jump to any of 35 categories or 320+ prototypes (⌘K / Ctrl+K)"
             className="craft-pressable craft-focus inline-flex h-8 items-center gap-2 rounded-lg px-2.5 text-[12px]"
             style={{
               background: 'var(--surface-0)',
@@ -277,7 +316,7 @@ export function App() {
             }}
           >
             <Search className="h-3.5 w-3.5 shrink-0" style={{ color: 'var(--ink-3)' }} />
-            <span className="hidden sm:inline">Jump to {totalVariants}+ components…</span>
+            <span className="hidden sm:inline">Search {totalVariants}+…</span>
             <kbd
               className="rounded px-1.5 py-0.5 text-[10px] font-medium"
               style={{
@@ -507,12 +546,13 @@ export function App() {
               {(
                 [
                   { id: 'all', label: 'All' },
-                  { id: 1, label: 'B1' },
-                  { id: 2, label: 'B2' },
-                  { id: 3, label: 'B3' },
-                  { id: 4, label: 'B4' },
-                  { id: 5, label: 'B5' },
+                  { id: 7, label: 'B7' },
                   { id: 6, label: 'B6' },
+                  { id: 5, label: 'B5' },
+                  { id: 4, label: 'B4' },
+                  { id: 3, label: 'B3' },
+                  { id: 2, label: 'B2' },
+                  { id: 1, label: 'B1' },
                   { id: 'todo', label: 'Todo' },
                 ] as const
               ).map((pill) => {
@@ -564,7 +604,7 @@ export function App() {
             ) : (
               <div className="flex flex-col gap-3.5">
                 {filteredGroups.map((group) => {
-                  const containsActive = group.entries.some((e) => e.spec.id === activeId);
+                  const containsActive = viewMode === 'stage' && group.entries.some((e) => e.spec.id === activeId);
                   const isExpanded =
                     Boolean(normalizedQuery) ||
                     batchFilter !== 'all' ||
@@ -609,7 +649,7 @@ export function App() {
                         <div className="flex flex-col gap-1">
                           {group.entries.map(({ spec, matchingVariants }) => {
                             const Icon = SPECIMEN_ICONS[spec.id];
-                            const active = spec.id === activeId;
+                            const active = viewMode === 'stage' && spec.id === activeId;
                             const dec = profile.specimens[spec.id];
                             const count = dec?.selectedIds?.length
                               ? dec.selectedIds.length
@@ -690,7 +730,7 @@ export function App() {
           </div>
         </nav>
 
-        {/* Center Interactive Stage */}
+        {/* Center Interactive Stage / Catalog Directory */}
         <main ref={mainStageRef} className="min-w-0 flex-1 overflow-y-auto px-5 py-6 sm:px-8">
           {/* Mobile specimen + theme quick bar */}
           <div className="mb-4 flex flex-wrap gap-2 xl:hidden">
@@ -728,14 +768,23 @@ export function App() {
             </select>
           </div>
 
-          <SpecimenStage
-            specimen={activeSpecimen}
-            decision={activeDecision}
-            ctx={{ dials: profile.dials, breakUi, mobilePreview }}
-            highlightedVariantId={highlightedVariantId}
-            prevSpecimen={prevSpecimen}
-            nextSpecimen={nextSpecimen}
-            onNavigateSpecimen={(id) => handleJump(id)}
+          {viewMode === 'catalog' ? (
+            <CatalogGallery
+              profile={profile}
+              icons={SPECIMEN_ICONS}
+              onJump={handleJump}
+            />
+          ) : (
+            <SpecimenStage
+              specimen={activeSpecimen}
+              decision={activeDecision}
+              ctx={{ dials: profile.dials, breakUi, mobilePreview }}
+              highlightedVariantId={highlightedVariantId}
+              prevSpecimen={prevSpecimen}
+              nextSpecimen={nextSpecimen}
+              onNavigateSpecimen={(id) => handleJump(id)}
+              onOpenCatalog={openCatalog}
+              onJumpVariant={(variantId) => handleJump(activeSpecimen.id, variantId)}
             onToggleSelect={(variantId) =>
               updateSpecimenDecision(activeSpecimen.id, (prev) => {
                 const exists = prev.selectedIds.includes(variantId);
@@ -789,6 +838,7 @@ export function App() {
               }))
             }
           />
+          )}
         </main>
 
         {/* Right Live Craft Dials */}

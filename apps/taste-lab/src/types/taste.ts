@@ -83,7 +83,12 @@ export type SpecimenId =
   | 'document-annotation-review'
   | 'micro-interactions-motion'
   | 'canvas-spatial-workflows'
-  | 'dashboards-ops-cockpits';
+  | 'dashboards-ops-cockpits'
+  | 'advanced-table-views'
+  | 'app-management-crud'
+  | 'rbac-teams-audit'
+  | 'work-management-views'
+  | 'search-filter-discoverability';
 
 export interface VariantMeta {
   id: string;
@@ -96,7 +101,7 @@ export interface VariantMeta {
 
 export interface SpecimenDefinition {
   id: SpecimenId;
-  batch: 1 | 2 | 3 | 4 | 5 | 6;
+  batch: 1 | 2 | 3 | 4 | 5 | 6 | 7;
   title: string;
   subtitle: string;
   question: string;

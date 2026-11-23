@@ -1,4 +1,4 @@
-import { Check, Ban, ChevronLeft, ChevronRight, MessageSquareText, Star } from 'lucide-react';
+import { Check, Ban, ChevronLeft, ChevronRight, LayoutGrid, MessageSquareText, Star } from 'lucide-react';
 import { SurfaceElevationSpecimen } from '../specimens/SurfaceElevationSpecimen';
 import { TypographyRhythmSpecimen } from '../specimens/TypographyRhythmSpecimen';
 import { ButtonsControlsSpecimen } from '../specimens/ButtonsControlsSpecimen';
@@ -29,6 +29,11 @@ import { DocumentAnnotationSpecimen } from '../specimens/DocumentAnnotationSpeci
 import { MicroInteractionsMotionSpecimen } from '../specimens/MicroInteractionsMotionSpecimen';
 import { CanvasWorkflowsSpecimen } from '../specimens/CanvasWorkflowsSpecimen';
 import { OpsCockpitsSpecimen } from '../specimens/OpsCockpitsSpecimen';
+import { AdvancedTableViewsSpecimen } from '../specimens/AdvancedTableViewsSpecimen';
+import { AppManagementCrudSpecimen } from '../specimens/AppManagementCrudSpecimen';
+import { RbacTeamsAuditSpecimen } from '../specimens/RbacTeamsAuditSpecimen';
+import { WorkManagementViewsSpecimen } from '../specimens/WorkManagementViewsSpecimen';
+import { SearchFilterDiscoverabilitySpecimen } from '../specimens/SearchFilterDiscoverabilitySpecimen';
 import type { SpecimenContext, SpecimenDecision, SpecimenDefinition } from '../types/taste';
 
 interface SpecimenStageProps {
@@ -39,6 +44,8 @@ interface SpecimenStageProps {
   prevSpecimen?: SpecimenDefinition;
   nextSpecimen?: SpecimenDefinition;
   onNavigateSpecimen?: (id: SpecimenDefinition['id']) => void;
+  onOpenCatalog?: () => void;
+  onJumpVariant?: (variantId: string) => void;
   onToggleSelect: (variantId: string) => void;
   onSetPrimary: (variantId: string) => void;
   onToggleReject: (variantId: string) => void;
@@ -53,6 +60,8 @@ export function SpecimenStage({
   prevSpecimen,
   nextSpecimen,
   onNavigateSpecimen,
+  onOpenCatalog,
+  onJumpVariant,
   onToggleSelect,
   onSetPrimary,
   onToggleReject,
@@ -130,14 +139,39 @@ export function SpecimenStage({
         return <CanvasWorkflowsSpecimen variantId={variantId} ctx={ctx} />;
       case 'dashboards-ops-cockpits':
         return <OpsCockpitsSpecimen variantId={variantId} ctx={ctx} />;
+      case 'advanced-table-views':
+        return <AdvancedTableViewsSpecimen variantId={variantId} ctx={ctx} />;
+      case 'app-management-crud':
+        return <AppManagementCrudSpecimen variantId={variantId} ctx={ctx} />;
+      case 'rbac-teams-audit':
+        return <RbacTeamsAuditSpecimen variantId={variantId} ctx={ctx} />;
+      case 'work-management-views':
+        return <WorkManagementViewsSpecimen variantId={variantId} ctx={ctx} />;
+      case 'search-filter-discoverability':
+        return <SearchFilterDiscoverabilitySpecimen variantId={variantId} ctx={ctx} />;
     }
   };
 
   return (
     <div className="mx-auto flex w-full max-w-[1120px] flex-col gap-6">
       {/* Header */}
-      <div className="flex flex-col gap-1.5">
+      <div className="flex flex-col gap-2">
         <div className="flex flex-wrap items-center gap-2">
+          {onOpenCatalog && (
+            <button
+              type="button"
+              onClick={onOpenCatalog}
+              className="craft-pressable craft-focus inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-[11px] font-medium"
+              style={{
+                background: 'var(--surface-1)',
+                color: 'var(--ink-1)',
+                border: '1px solid var(--border-subtle)',
+              }}
+            >
+              <LayoutGrid className="h-3 w-3" />
+              All Categories
+            </button>
+          )}
           <span
             className="rounded px-1.5 py-0.5 text-[10.5px] font-medium uppercase tracking-[0.06em]"
             style={{
@@ -177,6 +211,50 @@ export function SpecimenStage({
         <p className="max-w-[68ch] text-[13.5px] text-pretty-craft" style={{ color: 'var(--ink-2)' }}>
           {specimen.question}
         </p>
+
+        {/* Instant In-Category Prototype Jump Strip */}
+        <div
+          className="mt-1 flex flex-wrap items-center gap-1.5 rounded-xl p-2"
+          style={{
+            background: 'var(--surface-1)',
+            border: '1px solid var(--border-subtle)',
+          }}
+        >
+          <span
+            className="px-1.5 text-[10px] font-semibold uppercase tracking-[0.06em]"
+            style={{ color: 'var(--ink-3)', fontFamily: 'var(--dial-font-mono)' }}
+          >
+            Jump:
+          </span>
+          {specimen.variants.map((v, i) => {
+            const isPicked = selectedIds.includes(v.id);
+            const isHi = highlightedVariantId === v.id;
+            return (
+              <button
+                key={v.id}
+                type="button"
+                onClick={() => {
+                  if (onJumpVariant) {
+                    onJumpVariant(v.id);
+                  } else {
+                    document.getElementById(`variant-${v.id}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                  }
+                }}
+                className="inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-[11px] font-medium transition-colors"
+                style={{
+                  background: isHi ? 'var(--accent)' : isPicked ? 'var(--accent-soft)' : 'var(--surface-0)',
+                  color: isHi ? 'var(--accent-ink)' : 'var(--ink-1)',
+                  border: `1px solid ${isHi || isPicked ? 'var(--accent)' : 'var(--border-subtle)'}`,
+                }}
+              >
+                <span style={{ color: isHi ? 'var(--accent-ink)' : 'var(--ink-3)', fontFamily: 'var(--dial-font-mono)' }}>
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <span className="max-w-[165px] truncate">{v.name}</span>
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       {/* Interactive prototype grid (or 390px mobile column preview) */}
