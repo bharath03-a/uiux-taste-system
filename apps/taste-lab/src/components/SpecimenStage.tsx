@@ -185,7 +185,9 @@ export function SpecimenStage({
           return (
             <section
               key={variant.id}
-              className="flex flex-col overflow-hidden transition-opacity"
+              className={`flex flex-col overflow-hidden transition-opacity ${
+                variant.fullWidth && !ctx.mobilePreview ? 'xl:col-span-2' : ''
+              }`}
               style={{
                 width: ctx.mobilePreview ? '390px' : '100%',
                 maxWidth: '100%',

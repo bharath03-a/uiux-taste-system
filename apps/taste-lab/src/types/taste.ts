@@ -91,6 +91,7 @@ export interface VariantMeta {
   archetype: string;
   summary: string;
   traits: string[];
+  fullWidth?: boolean;
 }
 
 export interface SpecimenDefinition {
