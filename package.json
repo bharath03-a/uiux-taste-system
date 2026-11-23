@@ -1,13 +1,14 @@
 {
   "name": "uiux-taste-system",
-  "version": "0.3.0",
-  "description": "Bun-powered, framework-agnostic UI/UX Taste Lab (30 categories / 270+ prototypes incl. Risk Adjustment Coding & Kinetic Motion, 10 font pairings, 6 style archetypes), Local Design MCP Server, WCAG/APCA Contrast Engine, Multi-Framework Token Generator, and 5 Portable AI Agent Skills",
+  "version": "0.4.0",
+  "description": "Bun-powered, framework-agnostic UI/UX Taste Lab (35 categories / 330+ prototypes), Taste-Aware Component Matcher & Reference Extractor, Local 9-Tool Design MCP Server, WCAG/APCA Contrast Engine, Multi-Framework Token Generator, and 5 Portable AI Agent Skills",
   "license": "MIT",
   "type": "module",
   "bin": {
     "taste-lint": "./packages/taste-linter/bin/taste-lint.mjs",
     "taste-tokens": "./packages/taste-linter/bin/taste-tokens.mjs",
-    "taste-mcp": "./packages/taste-mcp/server.mjs"
+    "taste-mcp": "./packages/taste-mcp/server.mjs",
+    "taste-find": "./packages/taste-mcp/bin/taste-find.mjs"
   },
   "scripts": {
     "lab": "bun run --cwd apps/taste-lab dev",
@@ -15,6 +16,8 @@
     "typecheck": "bun run --cwd apps/taste-lab typecheck",
     "lint:taste": "bun packages/taste-linter/bin/taste-lint.mjs",
     "tokens:generate": "bun packages/taste-linter/bin/taste-tokens.mjs",
+    "index:components": "bun scripts/build-component-index.mjs",
+    "find:ui": "bun packages/taste-mcp/bin/taste-find.mjs",
     "mcp:taste": "bun packages/taste-mcp/server.mjs",
     "install:skills": "bun scripts/install-skills.mjs"
   },

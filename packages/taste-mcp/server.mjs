@@ -4,12 +4,15 @@
  *
  * Equips any MCP-compatible AI coding assistant (Claude Code, Cursor, Codex,
  * Antigravity, VS Code) with live, deterministic UI/UX design-engineering tools:
- *   1. check_contrast            — WCAG 2.1 + APCA Lc math + hue-preserving fix
- *   2. generate_accessible_theme — Accessible light/dark semantic tokens for ANY framework
- *   3. suggest_color_scale       — 50-950 tint/shade ramp with safe foreground ink per swatch
- *   4. pick_typography_and_style — Curated font pairings & style archetypes by mood
- *   5. recommend_ui_stack        — Best accessible UI primitives for any framework
- *   6. get_taste_spec            — Reads calibrated TASTE.md (full or filtered by topic)
+ *   1. match_ui_components       — Natural-language UI intent -> taste-ranked components from 330+ demos
+ *   2. get_component_reference   — Extracts working reference code + dials + rationale for any component
+ *   3. list_component_catalog    — Browse all 35 categories & 330+ components by domain/batch/taste status
+ *   4. check_contrast            — WCAG 2.1 + APCA Lc math + hue-preserving fix
+ *   5. generate_accessible_theme — Accessible light/dark semantic tokens for ANY framework
+ *   6. suggest_color_scale       — 50-950 tint/shade ramp with safe foreground ink per swatch
+ *   7. pick_typography_and_style — Curated font pairings & style archetypes by mood
+ *   8. recommend_ui_stack        — Best accessible UI primitives for any framework
+ *   9. get_taste_spec            — Reads calibrated TASTE.md (full or filtered by topic)
  */
 
 import fs from 'node:fs';
@@ -23,6 +26,11 @@ import {
   generateColorScale,
   suggestPassingHex,
 } from '../taste-linter/lib/color-engine.mjs';
+import {
+  getComponentReference,
+  listComponentCatalog,
+  matchComponents,
+} from './lib/component-matcher.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '../..');
@@ -35,6 +43,95 @@ const typographyCatalog = readJson('catalog/typography-and-styles.json');
 const frameworkCatalog = readJson('catalog/framework-libraries.json');
 
 const TOOLS = [
+  {
+    name: 'match_ui_components',
+    description:
+      'ALWAYS CALL THIS FIRST when a user describes any UI, table, settings screen, modal, form, navigation, RBAC, workflow, or component they want to build. Semantically matches their natural-language description against all 35 categories / 330+ Taste Lab prototypes, boosts patterns starred as PRIMARY or SELECTED in the user\'s calibrated taste.json, and flags REJECTED anti-patterns so you pick the exact components they already love.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        description: {
+          type: 'string',
+          description:
+            'Natural-language description of what the user wants to build (e.g. "app management table with saved views, column toggle, and a secrets vault" or "docs sidebar TOC with animated progress line")',
+        },
+        framework: {
+          type: 'string',
+          enum: ['react', 'vue', 'svelte', 'angular', 'solid', 'vanilla', 'react-native', 'flutter', 'swiftui'],
+          description: 'Optional target UI framework to attach matching stack recommendations.',
+        },
+        domain: {
+          type: 'string',
+          enum: ['tables-app-management', 'foundations', 'navigation-overlays', 'forms-flows-data', 'ai-docs-craft'],
+          description: 'Optional domain filter to narrow results.',
+        },
+        tasteOnly: {
+          type: 'boolean',
+          description: 'If true, only return components explicitly starred/selected in the user\'s taste.json.',
+        },
+        includeRejected: {
+          type: 'boolean',
+          description: 'If true, include explicitly rejected patterns in matches (default: false — rejected items are returned separately in avoidAntiPatterns).',
+        },
+        limit: {
+          type: 'number',
+          description: 'Maximum number of ranked component matches to return (default: 8).',
+        },
+      },
+      required: ['description'],
+    },
+  },
+  {
+    name: 'get_component_reference',
+    description:
+      'Retrieve the full working reference implementation source code, interaction state model, calibrated Craft Dials, taste rationale (whyNote/neverNote), and target framework adaptation guidance for any component returned by match_ui_components or list_component_catalog.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        id: {
+          type: 'string',
+          description: 'Combined component ID in "specimenId/variantId" format (e.g. "advanced-table-views/saved-views-column-controls")',
+        },
+        specimenId: {
+          type: 'string',
+          description: 'Category/specimen ID (e.g. "advanced-table-views", "rbac-teams-audit", "navigation-headers")',
+        },
+        variantId: {
+          type: 'string',
+          description: 'Prototype/variant ID (e.g. "saved-views-column-controls", "rbac-permission-matrix")',
+        },
+        framework: {
+          type: 'string',
+          enum: ['react', 'vue', 'svelte', 'angular', 'solid', 'vanilla', 'react-native', 'flutter', 'swiftui'],
+          description: 'Target framework you are implementing in (default: "react").',
+        },
+      },
+    },
+  },
+  {
+    name: 'list_component_catalog',
+    description:
+      'Browse all 35 UI/UX categories and 330+ prototypes in Taste Lab, filterable by domain, batch (1-7), or taste calibration status (all, approved, primary, uncalibrated).',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        domain: {
+          type: 'string',
+          enum: ['tables-app-management', 'foundations', 'navigation-overlays', 'forms-flows-data', 'ai-docs-craft'],
+          description: 'Optional domain bucket filter.',
+        },
+        batch: {
+          type: 'number',
+          description: 'Optional batch number (1 through 7).',
+        },
+        tasteFilter: {
+          type: 'string',
+          enum: ['all', 'approved', 'primary', 'uncalibrated'],
+          description: 'Filter by user calibration status in taste.json (default: "all").',
+        },
+      },
+    },
+  },
   {
     name: 'check_contrast',
     description:
@@ -138,6 +235,15 @@ const TOOLS = [
 
 function handleToolCall(name, args = {}) {
   switch (name) {
+    case 'match_ui_components':
+      return matchComponents(args);
+
+    case 'get_component_reference':
+      return getComponentReference(args);
+
+    case 'list_component_catalog':
+      return listComponentCatalog(args);
+
     case 'check_contrast': {
       const role = args.role || 'body';
       const minWcag = role === 'aaa' ? 7.0 : role === 'ui' ? 3.0 : 4.5;
@@ -283,7 +389,7 @@ rl.on('line', (line) => {
         result: {
           protocolVersion: '2024-11-05',
           capabilities: { tools: {} },
-          serverInfo: { name: 'uiux-taste-mcp', version: '0.2.0' },
+          serverInfo: { name: 'uiux-taste-mcp', version: '0.4.0' },
         },
       });
     } else if (method === 'tools/list') {
