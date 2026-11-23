@@ -1,4 +1,4 @@
-import { Check, Ban, MessageSquareText, Star } from 'lucide-react';
+import { Check, Ban, ChevronLeft, ChevronRight, MessageSquareText, Star } from 'lucide-react';
 import { SurfaceElevationSpecimen } from '../specimens/SurfaceElevationSpecimen';
 import { TypographyRhythmSpecimen } from '../specimens/TypographyRhythmSpecimen';
 import { ButtonsControlsSpecimen } from '../specimens/ButtonsControlsSpecimen';
@@ -35,6 +35,10 @@ interface SpecimenStageProps {
   specimen: SpecimenDefinition;
   decision?: SpecimenDecision;
   ctx: SpecimenContext;
+  highlightedVariantId?: string | null;
+  prevSpecimen?: SpecimenDefinition;
+  nextSpecimen?: SpecimenDefinition;
+  onNavigateSpecimen?: (id: SpecimenDefinition['id']) => void;
   onToggleSelect: (variantId: string) => void;
   onSetPrimary: (variantId: string) => void;
   onToggleReject: (variantId: string) => void;
@@ -45,6 +49,10 @@ export function SpecimenStage({
   specimen,
   decision,
   ctx,
+  highlightedVariantId,
+  prevSpecimen,
+  nextSpecimen,
+  onNavigateSpecimen,
   onToggleSelect,
   onSetPrimary,
   onToggleReject,
@@ -181,11 +189,13 @@ export function SpecimenStage({
           const isSelected = selectedIds.includes(variant.id);
           const isPrimary = primaryId === variant.id;
           const isRejected = decision?.rejectedIds?.includes(variant.id) ?? false;
+          const isHighlighted = highlightedVariantId === variant.id;
 
           return (
             <section
               key={variant.id}
-              className={`flex flex-col overflow-hidden transition-opacity ${
+              id={`variant-${variant.id}`}
+              className={`flex flex-col overflow-hidden transition-all ${
                 variant.fullWidth && !ctx.mobilePreview ? 'xl:col-span-2' : ''
               }`}
               style={{
@@ -193,12 +203,14 @@ export function SpecimenStage({
                 maxWidth: '100%',
                 background: 'var(--surface-1)',
                 borderRadius: '14px',
-                border: isPrimary
+                border: isHighlighted || isPrimary
                   ? '1.5px solid var(--accent)'
                   : isSelected
                     ? '1.5px solid var(--border-strong)'
                     : '1px solid var(--border-subtle)',
+                boxShadow: isHighlighted ? '0 0 0 3px var(--accent-soft)' : undefined,
                 opacity: isRejected ? 0.56 : 1,
+                scrollMarginTop: '20px',
               }}
             >
               {/* Variant card header */}
@@ -360,6 +372,68 @@ export function SpecimenStage({
           </label>
         </div>
       </div>
+
+      {/* Category Prev / Next Navigation Footer */}
+      {onNavigateSpecimen && (prevSpecimen || nextSpecimen) && (
+        <div
+          className="flex flex-wrap items-center justify-between gap-3 pt-2"
+          style={{ borderTop: '1px solid var(--border-subtle)' }}
+        >
+          {prevSpecimen ? (
+            <button
+              type="button"
+              onClick={() => onNavigateSpecimen(prevSpecimen.id)}
+              className="craft-pressable craft-focus flex items-center gap-2 rounded-xl px-3.5 py-2.5 text-left"
+              style={{
+                background: 'var(--surface-1)',
+                border: '1px solid var(--border-subtle)',
+              }}
+            >
+              <ChevronLeft className="h-4 w-4 shrink-0" style={{ color: 'var(--ink-3)' }} />
+              <div className="min-w-0">
+                <div
+                  className="text-[10px] uppercase tracking-[0.06em]"
+                  style={{ color: 'var(--ink-3)', fontFamily: 'var(--dial-font-mono)' }}
+                >
+                  Previous · B{prevSpecimen.batch}
+                </div>
+                <div className="truncate text-[12.5px] font-semibold" style={{ color: 'var(--ink-1)' }}>
+                  {prevSpecimen.title}
+                </div>
+              </div>
+            </button>
+          ) : (
+            <div />
+          )}
+
+          {nextSpecimen ? (
+            <button
+              type="button"
+              onClick={() => onNavigateSpecimen(nextSpecimen.id)}
+              className="craft-pressable craft-focus flex items-center gap-2 rounded-xl px-3.5 py-2.5 text-right"
+              style={{
+                background: 'var(--surface-1)',
+                border: '1px solid var(--border-subtle)',
+              }}
+            >
+              <div className="min-w-0">
+                <div
+                  className="text-[10px] uppercase tracking-[0.06em]"
+                  style={{ color: 'var(--ink-3)', fontFamily: 'var(--dial-font-mono)' }}
+                >
+                  Next · B{nextSpecimen.batch}
+                </div>
+                <div className="truncate text-[12.5px] font-semibold" style={{ color: 'var(--ink-1)' }}>
+                  {nextSpecimen.title}
+                </div>
+              </div>
+              <ChevronRight className="h-4 w-4 shrink-0" style={{ color: 'var(--ink-3)' }} />
+            </button>
+          ) : (
+            <div />
+          )}
+        </div>
+      )}
     </div>
   );
 }

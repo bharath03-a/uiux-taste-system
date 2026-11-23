@@ -83,19 +83,146 @@ export function RiskAdjustmentCodingSpecimen({ variantId, ctx }: Props) {
   }
 }
 
+interface EncounterDef {
+  id: string;
+  dos: string;
+  specialty: string;
+  provider: string;
+  npi: string;
+  pos: string;
+  pages: string;
+  startPage: number;
+  signed: boolean;
+  noteTitle: string;
+  dxCount: number;
+  spans: { code: string; hcc: string; text: string }[];
+  extraLine: string;
+}
+
+const ENCOUNTERS: EncounterDef[] = [
+  {
+    id: 'enc-1',
+    dos: '09/14/2026',
+    specialty: 'Endocrinology',
+    provider: 'Dr. R. Patel, MD',
+    npi: '1841290441',
+    pos: '11 · Office',
+    pages: 'p.4–6',
+    startPage: 4,
+    signed: true,
+    noteTitle: 'Endocrinology Follow-Up — Assessment & Plan',
+    dxCount: 2,
+    spans: [
+      {
+        code: 'E11.22',
+        hcc: 'HCC 37',
+        text: 'Type 2 diabetes mellitus with diabetic nephropathy (HbA1c 7.8% today). Continue empagliflozin 10mg PO daily and metformin 1000mg BID.',
+      },
+      {
+        code: 'N18.31',
+        hcc: 'HCC 329',
+        text: 'Chronic kidney disease stage 3a — eGFR 52 mL/min, uACR 142 mg/g. Repeat BMP and renal panel in 90 days; avoid NSAIDs.',
+      },
+    ],
+    extraLine: 'Electronically signed by R. Patel, MD · 09/14/2026 16:42 EST.',
+  },
+  {
+    id: 'enc-2',
+    dos: '07/22/2026',
+    specialty: 'Cardiology',
+    provider: 'Dr. L. Gomez, MD',
+    npi: '1497723108',
+    pos: '11 · Office',
+    pages: 'p.7–9',
+    startPage: 7,
+    signed: true,
+    noteTitle: 'Cardiopulmonary Consult — Echo & Spirometry',
+    dxCount: 2,
+    spans: [
+      {
+        code: 'I50.22',
+        hcc: 'HCC 226',
+        text: 'Chronic systolic heart failure (HFrEF), recent TTE EF 38%. Euvolemic on sacubitril/valsartan 49/51mg BID and carvedilol 12.5mg BID.',
+      },
+      {
+        code: 'J44.9',
+        hcc: 'HCC 280',
+        text: 'COPD stable on tiotropium 18mcg inhaled daily; FEV1/FVC 0.61. No recent exacerbations.',
+      },
+    ],
+    extraLine: 'Electronically signed by L. Gomez, MD · 07/22/2026 11:18 EST.',
+  },
+  {
+    id: 'enc-3',
+    dos: '05/28/2026',
+    specialty: 'LabCorp Panel',
+    provider: 'Lab Reference',
+    npi: '1538144910',
+    pos: '81 · Ind. Lab',
+    pages: 'p.10–11',
+    startPage: 10,
+    signed: true,
+    noteTitle: 'Comprehensive Metabolic & HbA1c Reference Labs',
+    dxCount: 0,
+    spans: [
+      {
+        code: 'N18.31',
+        hcc: 'Lab Proof',
+        text: 'eGFR 52 mL/min/1.73m² [Low], Creatinine 1.38 mg/dL, uACR 142 mg/g [High], HbA1c 7.8% [High]. Supporting evidence only (non-billable standalone).',
+      },
+    ],
+    extraLine: 'Ordering Provider: Dr. R. Patel, MD · Verified Result.',
+  },
+  {
+    id: 'enc-4',
+    dos: '02/11/2026',
+    specialty: 'PCP Annual',
+    provider: 'A. Singh, NP',
+    npi: '1922501883',
+    pos: '11 · Office',
+    pages: 'p.12',
+    startPage: 12,
+    signed: false,
+    noteTitle: 'Primary Care Wellness — Unsigned Draft Note',
+    dxCount: 2,
+    spans: [
+      {
+        code: 'I73.9',
+        hcc: 'HCC 267',
+        text: 'Peripheral arterial duplex shows ABI 0.72 right; claudication at 2 blocks — start cilostazol 100mg BID.',
+      },
+      {
+        code: 'E66.01',
+        hcc: 'HCC 48',
+        text: 'BMI 41.2 kg/m² — morbid obesity discussed, nutrition referral placed.',
+      },
+    ],
+    extraLine: '⚠ Missing Provider Signature — hold or query provider before RADV submission.',
+  },
+];
+
 // ---------------------------------------------------------------------------
-// 01 · Classic 3-Pane Full Chart Viewer + Right Live Code Entry Rail
+// 01 · Production 3-Pane Risk Adjustment Studio:
+//      Left = Encounters | Middle = Full Chart Viewer | Right = Diagnoses & Details
 // ---------------------------------------------------------------------------
 
 function SplitChartCodeWorkbench({ ctx }: { ctx: SpecimenContext }) {
-  const [page, setPage] = useState<number>(4);
+  const [encId, setEncId] = useState<string>('enc-1');
+  const [rightTab, setRightTab] = useState<'dx' | 'suspects' | 'details'>('dx');
   const [focusedCode, setFocusedCode] = useState<string>('E11.22');
   const [query, setQuery] = useState('');
+  const [chartSearch, setChartSearch] = useState('');
+  const [zoom, setZoom] = useState(100);
+  const [showPhi, setShowPhi] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [entered, setEntered] = useState<(CatalogCode & { meat: string[] })[]>([
-    { ...ICD_CATALOG[0], meat: ['M', 'A', 'T'] },
-    { ...ICD_CATALOG[2], meat: ['M', 'E'] },
+  const [coderNote, setCoderNote] = useState('eGFR 52 + A1c 7.8% corroborate diabetic CKD stage 3a.');
+  const [entered, setEntered] = useState<(CatalogCode & { encId: string; meat: string[] })[]>([
+    { ...ICD_CATALOG[0], encId: 'enc-1', meat: ['M', 'A', 'T'] },
+    { ...ICD_CATALOG[2], encId: 'enc-1', meat: ['M', 'E'] },
+    { ...ICD_CATALOG[3], encId: 'enc-2', meat: ['M', 'A', 'T'] },
   ]);
+
+  const activeEnc = ENCOUNTERS.find((e) => e.id === encId) ?? ENCOUNTERS[0];
 
   const matches = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -106,10 +233,15 @@ function SplitChartCodeWorkbench({ ctx }: { ctx: SpecimenContext }) {
     ).slice(0, 4);
   }, [query, entered]);
 
-  const addCode = (c: CatalogCode) => {
-    setEntered((prev) => [...prev, { ...c, meat: ['A', 'T'] }]);
+  const aiSuspects = useMemo(
+    () => ICD_CATALOG.filter((c) => !entered.some((e) => e.code === c.code) && c.code !== 'E11.9'),
+    [entered],
+  );
+
+  const addCode = (c: CatalogCode, targetEncId = encId) => {
+    if (entered.some((e) => e.code === c.code)) return;
+    setEntered((prev) => [...prev, { ...c, encId: targetEncId, meat: ['A', 'T'] }]);
     setFocusedCode(c.code);
-    setPage(c.page);
     setQuery('');
     setSubmitted(false);
   };
@@ -125,12 +257,7 @@ function SplitChartCodeWorkbench({ ctx }: { ctx: SpecimenContext }) {
   };
 
   const raf = computeRaf(entered);
-  const pageList = [
-    { n: 1, label: 'Cover', hasEvidence: false },
-    { n: 4, label: 'Endo Note', hasEvidence: true },
-    { n: 7, label: 'Cardio/Pulm', hasEvidence: true },
-    { n: 12, label: 'Vasc/BMI', hasEvidence: true },
-  ];
+  const pmpm = Math.round(raf * 985);
 
   return (
     <div
@@ -141,7 +268,7 @@ function SplitChartCodeWorkbench({ ctx }: { ctx: SpecimenContext }) {
         border: '1px solid var(--border-subtle)',
       }}
     >
-      {/* Top Workspace Bar */}
+      {/* Top Patient / Chase Workspace Header */}
       <div
         className="flex flex-wrap items-center justify-between gap-2 px-3 py-2"
         style={{ background: 'var(--surface-1)', borderBottom: '1px solid var(--border-subtle)' }}
@@ -150,18 +277,25 @@ function SplitChartCodeWorkbench({ ctx }: { ctx: SpecimenContext }) {
           <span className="text-[11.5px] font-semibold" style={{ color: 'var(--ink-1)', fontFamily: 'var(--dial-font-mono)' }}>
             {ctx.breakUi ? 'CHASE-2026-0094821-MA-V28' : 'CHASE-94821'}
           </span>
-          <span className="rounded px-1.5 py-0.5 text-[10px]" style={{ background: 'var(--surface-0)', color: 'var(--ink-3)', border: '1px solid var(--border-subtle)', fontFamily: 'var(--dial-font-mono)' }}>
-            DOS 2026-09-14 · Dr. R. Patel, MD
-          </span>
-          <span className="inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-[10px]" style={{ background: 'var(--accent-soft)', color: 'var(--ink-1)', fontFamily: 'var(--dial-font-mono)' }}>
-            <ShieldCheck className="h-3 w-3" /> Signed
+          <button
+            type="button"
+            onClick={() => setShowPhi((v) => !v)}
+            className="rounded px-1.5 py-0.5 text-[10px]"
+            style={{ background: 'var(--surface-0)', color: 'var(--ink-2)', border: '1px solid var(--border-subtle)', fontFamily: 'var(--dial-font-mono)' }}
+            title="Click to reveal/mask PHI"
+          >
+            {showPhi ? 'M. Alvarez · DOB 1954-06-18' : 'M. A•••• · MRN-••••109'}
+          </button>
+          <span className="rounded px-1.5 py-0.5 text-[10px]" style={{ background: 'var(--accent-soft)', color: 'var(--ink-1)', fontFamily: 'var(--dial-font-mono)' }}>
+            CMS-HCC V28
           </span>
         </div>
 
-        <div className="flex items-center gap-2.5">
-          <div className="flex items-center gap-1.5 text-[11px]" style={{ fontFamily: 'var(--dial-font-mono)' }}>
-            <span style={{ color: 'var(--ink-3)' }}>V28 RAF</span>
+        <div className="flex flex-wrap items-center gap-2.5">
+          <div className="flex items-center gap-2 text-[11px]" style={{ fontFamily: 'var(--dial-font-mono)' }}>
+            <span style={{ color: 'var(--ink-3)' }}>RAF</span>
             <span className="tabular-nums-auto font-semibold" style={{ color: 'var(--ink-1)' }}>{raf.toFixed(3)}</span>
+            <span className="tabular-nums-auto text-[10.5px]" style={{ color: 'var(--success)' }}>${pmpm}/mo</span>
           </div>
           <button
             type="button"
@@ -175,294 +309,403 @@ function SplitChartCodeWorkbench({ ctx }: { ctx: SpecimenContext }) {
         </div>
       </div>
 
-      {/* 3-Pane Body */}
-      <div className={`grid min-h-[290px] ${ctx.mobilePreview ? 'grid-cols-1' : 'grid-cols-1 lg:grid-cols-[74px_1fr_320px]'}`}>
-        {/* Left Page Rail */}
+      {/* 3-Pane Production Coding Layout: Encounters (Left) | Chart Viewer (Middle) | Diagnoses & Details (Right) */}
+      <div className={`grid min-h-[340px] ${ctx.mobilePreview ? 'grid-cols-1' : 'grid-cols-1 lg:grid-cols-[205px_1fr_335px]'}`}>
+        {/* LEFT PANE: Encounters List */}
         <div
-          className="flex flex-row gap-1 overflow-x-auto p-2 lg:flex-col"
-          style={{ background: 'var(--surface-1)', borderRight: '1px solid var(--border-subtle)', borderBottom: ctx.mobilePreview ? '1px solid var(--border-subtle)' : undefined }}
+          className="flex flex-col gap-1.5 p-2.5"
+          style={{
+            background: 'var(--surface-1)',
+            borderRight: ctx.mobilePreview ? undefined : '1px solid var(--border-subtle)',
+            borderBottom: ctx.mobilePreview ? '1px solid var(--border-subtle)' : undefined,
+          }}
         >
-          {pageList.map((p) => {
-            const active = page === p.n;
-            return (
-              <button
-                key={p.n}
-                type="button"
-                onClick={() => setPage(p.n)}
-                className="flex shrink-0 flex-col items-center justify-center rounded-md px-2 py-1.5 text-center transition-colors"
-                style={{
-                  background: active ? 'var(--surface-2)' : 'var(--surface-0)',
-                  border: `1px solid ${active ? 'var(--accent)' : 'var(--border-subtle)'}`,
-                  color: active ? 'var(--ink-1)' : 'var(--ink-3)',
-                }}
-              >
-                <span className="text-[10.5px] font-semibold" style={{ fontFamily: 'var(--dial-font-mono)' }}>p.{p.n}</span>
-                <span className="mt-0.5 text-[9px]">{p.label}</span>
-                <span className="mt-1 h-1.5 w-1.5 rounded-full" style={{ background: p.hasEvidence ? 'var(--accent)' : 'transparent' }} />
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Center Full Chart Viewer */}
-        <div className="flex flex-col gap-2.5 p-3.5" style={{ background: 'var(--surface-0)', borderRight: ctx.mobilePreview ? undefined : '1px solid var(--border-subtle)' }}>
-          <div className="flex items-center justify-between text-[10.5px]" style={{ color: 'var(--ink-3)', fontFamily: 'var(--dial-font-mono)' }}>
-            <span className="inline-flex items-center gap-1.5">
-              <FileText className="h-3.5 w-3.5" />
-              ENCOUNTER CHART · PAGE {page} OF 12
+          <div className="flex items-center justify-between px-1 pb-1">
+            <span className="text-[10px] font-semibold uppercase tracking-[0.06em]" style={{ color: 'var(--ink-3)', fontFamily: 'var(--dial-font-mono)' }}>
+              Encounters ({ENCOUNTERS.length})
             </span>
-            <span>Click highlighted text to sync code</span>
+            <span className="text-[9.5px]" style={{ color: 'var(--ink-3)', fontFamily: 'var(--dial-font-mono)' }}>
+              12p PDF
+            </span>
           </div>
 
-          <div
-            className="flex-1 rounded-lg p-3.5 text-[12px] leading-relaxed"
-            style={{ background: 'var(--surface-1)', border: '1px solid var(--border-subtle)', color: 'var(--ink-2)' }}
-          >
-            <div className="mb-2 flex items-center justify-between pb-2 text-[11px]" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
-              <span className="font-semibold" style={{ color: 'var(--ink-1)' }}>
-                {page === 4 ? 'Endocrinology Follow-Up — Assessment & Plan' : page === 7 ? 'Cardiopulmonary Consult — Echo & Spirometry' : page === 12 ? 'Primary Care — Vascular & Metabolic Screen' : 'Encounter Cover Sheet'}
-              </span>
-              <span style={{ color: 'var(--ink-3)', fontFamily: 'var(--dial-font-mono)' }}>MRN-••••109</span>
-            </div>
-
-            {page === 4 && (
-              <div className="space-y-2">
-                <p>
-                  1.{' '}
-                  <button
-                    type="button"
-                    onClick={() => setFocusedCode('E11.22')}
-                    className="rounded px-1 py-0.5 text-left transition-colors"
-                    style={{
-                      background: focusedCode === 'E11.22' ? 'var(--accent-soft)' : 'var(--surface-0)',
-                      color: 'var(--ink-1)',
-                      outline: focusedCode === 'E11.22' ? '1.5px solid var(--accent)' : '1px solid var(--border-subtle)',
-                    }}
-                  >
-                    Type 2 diabetes mellitus with diabetic nephropathy (HbA1c 7.8% today). Continue empagliflozin 10mg PO daily and metformin 1000mg BID.
-                  </button>
-                </p>
-                <p>
-                  2.{' '}
-                  <button
-                    type="button"
-                    onClick={() => setFocusedCode('N18.31')}
-                    className="rounded px-1 py-0.5 text-left transition-colors"
-                    style={{
-                      background: focusedCode === 'N18.31' ? 'var(--accent-soft)' : 'var(--surface-0)',
-                      color: 'var(--ink-1)',
-                      outline: focusedCode === 'N18.31' ? '1.5px solid var(--accent)' : '1px solid var(--border-subtle)',
-                    }}
-                  >
-                    Chronic kidney disease stage 3a — eGFR 52 mL/min, uACR 142 mg/g. Repeat BMP and renal panel in 90 days; avoid NSAIDs.
-                  </button>
-                </p>
-              </div>
-            )}
-
-            {page === 7 && (
-              <div className="space-y-2">
-                <p>
-                  1.{' '}
-                  <button
-                    type="button"
-                    onClick={() => setFocusedCode('I50.22')}
-                    className="rounded px-1 py-0.5 text-left transition-colors"
-                    style={{
-                      background: focusedCode === 'I50.22' ? 'var(--accent-soft)' : 'var(--surface-0)',
-                      color: 'var(--ink-1)',
-                      outline: focusedCode === 'I50.22' ? '1.5px solid var(--accent)' : '1px solid var(--border-subtle)',
-                    }}
-                  >
-                    Chronic systolic heart failure (HFrEF), recent TTE EF 38%. Euvolemic on sacubitril/valsartan 49/51mg BID and carvedilol 12.5mg BID.
-                  </button>
-                </p>
-                <p>
-                  2.{' '}
-                  <button
-                    type="button"
-                    onClick={() => setFocusedCode('J44.9')}
-                    className="rounded px-1 py-0.5 text-left transition-colors"
-                    style={{
-                      background: focusedCode === 'J44.9' ? 'var(--accent-soft)' : 'var(--surface-0)',
-                      color: 'var(--ink-1)',
-                      outline: focusedCode === 'J44.9' ? '1.5px solid var(--accent)' : '1px solid var(--border-subtle)',
-                    }}
-                  >
-                    COPD stable on tiotropium 18mcg daily; FEV1/FVC 0.61. No recent exacerbations.
-                  </button>
-                </p>
-              </div>
-            )}
-
-            {page === 12 && (
-              <div className="space-y-2">
-                <p>
-                  1. Peripheral arterial duplex shows ABI 0.72 right; claudication at 2 blocks — start cilostazol 100mg BID (I73.9).
-                </p>
-                <p>
-                  2. BMI 41.2 kg/m² — morbid obesity discussed, nutrition referral placed (E66.01).
-                </p>
-              </div>
-            )}
-
-            {page === 1 && (
-              <p>
-                Face-to-face ambulatory packet · 12 scanned pages · OCR confidence 99.1% · 4 AI diagnosis spans indexed on pages 4, 7, and 12.
-              </p>
-            )}
-          </div>
-        </div>
-
-        {/* Right Code Entry + Active Codes Rail */}
-        <div className="flex flex-col gap-2.5 p-3" style={{ background: 'var(--surface-1)' }}>
-          {/* Live ICD-10 Code Entry Box */}
-          <div className="relative">
-            <div
-              className="flex items-center gap-1.5 rounded-md px-2.5 py-1.5"
-              style={{ background: 'var(--surface-0)', border: '1px solid var(--border-strong)' }}
-            >
-              <Search className="h-3.5 w-3.5 shrink-0" style={{ color: 'var(--ink-3)' }} />
-              <input
-                type="text"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' && matches[0]) addCode(matches[0]);
-                }}
-                placeholder="Enter ICD-10 (try I50, J44, I73…)"
-                className="min-w-0 flex-1 bg-transparent text-[11.5px] outline-none"
-                style={{ color: 'var(--ink-1)' }}
-              />
-              <kbd className="rounded px-1 py-0.5 text-[9.5px]" style={{ background: 'var(--surface-1)', color: 'var(--ink-3)', fontFamily: 'var(--dial-font-mono)' }}>
-                ↵
-              </kbd>
-            </div>
-
-            {matches.length > 0 && (
-              <div
-                className="absolute inset-x-0 top-full z-20 mt-1 flex flex-col gap-0.5 rounded-lg p-1"
-                style={{ background: 'var(--surface-1)', border: '1px solid var(--border-strong)', boxShadow: 'var(--shadow-md)' }}
-              >
-                {matches.map((m) => (
-                  <button
-                    key={m.code}
-                    type="button"
-                    onClick={() => addCode(m)}
-                    className="flex items-center justify-between gap-2 rounded-md px-2 py-1.5 text-left text-[11px] hover:opacity-90"
-                    style={{ background: 'var(--surface-0)', color: 'var(--ink-1)' }}
-                  >
-                    <span className="min-w-0 truncate">
-                      <strong style={{ fontFamily: 'var(--dial-font-mono)' }}>{m.code}</strong> · {m.desc}
-                    </span>
-                    <span className="shrink-0 text-[10px]" style={{ color: 'var(--accent)', fontFamily: 'var(--dial-font-mono)' }}>
-                      +{m.raf.toFixed(3)}
-                    </span>
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Quick-Add Suggestions */}
-          <div className="flex flex-wrap items-center gap-1">
-            <span className="text-[10px]" style={{ color: 'var(--ink-3)', fontFamily: 'var(--dial-font-mono)' }}>AI Suggest:</span>
-            {ICD_CATALOG.slice(3, 6)
-              .filter((c) => !entered.some((e) => e.code === c.code))
-              .map((c) => (
-                <button
-                  key={c.code}
-                  type="button"
-                  onClick={() => addCode(c)}
-                  className="inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-[10px] font-medium"
-                  style={{ background: 'var(--accent-soft)', color: 'var(--ink-1)', fontFamily: 'var(--dial-font-mono)' }}
-                >
-                  <Plus className="h-2.5 w-2.5" /> {c.code}
-                </button>
-              ))}
-          </div>
-
-          {/* Entered Codes List */}
-          <div className="flex flex-1 flex-col gap-1.5 overflow-y-auto">
-            {entered.map((item) => {
-              const active = focusedCode === item.code;
-              const superseded = Boolean(item.supersededBy && entered.some((e) => e.code === item.supersededBy));
+          <div className="flex flex-col gap-1">
+            {ENCOUNTERS.map((enc) => {
+              const active = enc.id === encId;
+              const encCodeCount = entered.filter((e) => e.encId === enc.id).length;
               return (
-                <div
-                  key={item.code}
+                <button
+                  key={enc.id}
+                  type="button"
                   onClick={() => {
-                    setFocusedCode(item.code);
-                    setPage(item.page);
+                    setEncId(enc.id);
+                    if (enc.spans[0]) setFocusedCode(enc.spans[0].code);
                   }}
-                  className="cursor-pointer rounded-md p-2 transition-colors"
+                  className="flex flex-col gap-0.5 rounded-lg p-2 text-left transition-colors"
                   style={{
                     background: active ? 'var(--surface-2)' : 'var(--surface-0)',
                     border: `1px solid ${active ? 'var(--accent)' : 'var(--border-subtle)'}`,
-                    opacity: superseded ? 0.55 : 1,
                   }}
                 >
-                  <div className="flex items-center justify-between gap-1.5">
-                    <div className="flex items-center gap-1.5">
-                      <span className={`text-[11.5px] font-semibold ${superseded ? 'line-through' : ''}`} style={{ color: 'var(--ink-1)', fontFamily: 'var(--dial-font-mono)' }}>
-                        {item.code}
-                      </span>
-                      <span className="rounded px-1 py-0.5 text-[9.5px]" style={{ background: 'var(--surface-1)', color: 'var(--ink-2)', fontFamily: 'var(--dial-font-mono)' }}>
-                        {item.hcc}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-1.5">
-                      <span className="tabular-nums-auto text-[10.5px] font-medium" style={{ color: superseded ? 'var(--ink-3)' : 'var(--success)', fontFamily: 'var(--dial-font-mono)' }}>
-                        {superseded ? 'Trumped' : `+${item.raf.toFixed(3)}`}
-                      </span>
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setEntered((prev) => prev.filter((x) => x.code !== item.code));
-                        }}
-                        aria-label={`Remove ${item.code}`}
-                        style={{ color: 'var(--ink-3)' }}
-                      >
-                        <X className="h-3 w-3" />
-                      </button>
-                    </div>
-                  </div>
-                  <div className="mt-0.5 truncate text-[10.5px]" style={{ color: 'var(--ink-3)' }}>
-                    {item.desc}
-                  </div>
-                  <div className="mt-1.5 flex items-center justify-between gap-2">
-                    <div className="flex gap-1">
-                      {['M', 'E', 'A', 'T'].map((l) => {
-                        const on = item.meat.includes(l);
-                        return (
-                          <button
-                            key={l}
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              toggleMeat(item.code, l);
-                            }}
-                            className="h-4 w-4 rounded text-[9.5px] font-bold"
-                            style={{
-                              background: on ? 'var(--accent)' : 'var(--surface-1)',
-                              color: on ? 'var(--accent-ink)' : 'var(--ink-3)',
-                              border: on ? 'none' : '1px solid var(--border-subtle)',
-                              fontFamily: 'var(--dial-font-mono)',
-                            }}
-                          >
-                            {l}
-                          </button>
-                        );
-                      })}
-                    </div>
+                  <div className="flex items-center justify-between gap-1">
+                    <span className="text-[11px] font-semibold" style={{ color: 'var(--ink-1)', fontFamily: 'var(--dial-font-mono)' }}>
+                      {enc.dos}
+                    </span>
                     <span className="text-[9.5px]" style={{ color: 'var(--ink-3)', fontFamily: 'var(--dial-font-mono)' }}>
-                      p.{item.page}
+                      {enc.pages}
                     </span>
                   </div>
-                </div>
+                  <div className="truncate text-[11px] font-medium" style={{ color: 'var(--ink-2)' }}>
+                    {enc.specialty} · {enc.provider}
+                  </div>
+                  <div className="mt-0.5 flex items-center justify-between gap-1 text-[9.5px]" style={{ fontFamily: 'var(--dial-font-mono)' }}>
+                    <span style={{ color: enc.signed ? 'var(--success)' : 'var(--danger)' }}>
+                      {enc.signed ? '✓ Signed' : '⚠ Unsigned'}
+                    </span>
+                    <span
+                      className="rounded px-1 py-0.5"
+                      style={{
+                        background: encCodeCount > 0 ? 'var(--accent-soft)' : 'var(--surface-1)',
+                        color: encCodeCount > 0 ? 'var(--ink-1)' : 'var(--ink-3)',
+                      }}
+                    >
+                      {encCodeCount} dx
+                    </span>
+                  </div>
+                </button>
               );
             })}
           </div>
+        </div>
+
+        {/* MIDDLE PANE: Full Clinical Chart Document Viewer */}
+        <div
+          className="flex flex-col"
+          style={{
+            background: 'var(--surface-0)',
+            borderRight: ctx.mobilePreview ? undefined : '1px solid var(--border-subtle)',
+            borderBottom: ctx.mobilePreview ? '1px solid var(--border-subtle)' : undefined,
+          }}
+        >
+          {/* Chart Viewer Mini Toolbar */}
+          <div
+            className="flex flex-wrap items-center justify-between gap-2 px-3 py-1.5"
+            style={{ background: 'var(--surface-1)', borderBottom: '1px solid var(--border-subtle)' }}
+          >
+            <div className="flex items-center gap-1.5 text-[10.5px]" style={{ color: 'var(--ink-2)', fontFamily: 'var(--dial-font-mono)' }}>
+              <FileText className="h-3.5 w-3.5" style={{ color: 'var(--ink-3)' }} />
+              <span>{activeEnc.pages}</span>
+              <span style={{ color: 'var(--ink-3)' }}>·</span>
+              <button type="button" onClick={() => setZoom((z) => (z >= 120 ? 90 : z + 10))} className="rounded px-1.5 py-0.5" style={{ background: 'var(--surface-0)', border: '1px solid var(--border-subtle)' }}>
+                {zoom}%
+              </button>
+            </div>
+            <div className="flex items-center gap-1 rounded px-2 py-0.5" style={{ background: 'var(--surface-0)', border: '1px solid var(--border-subtle)' }}>
+              <Search className="h-3 w-3" style={{ color: 'var(--ink-3)' }} />
+              <input
+                type="text"
+                value={chartSearch}
+                onChange={(e) => setChartSearch(e.target.value)}
+                placeholder="Find in chart…"
+                className="w-[100px] bg-transparent text-[10.5px] outline-none"
+                style={{ color: 'var(--ink-1)' }}
+              />
+            </div>
+          </div>
+
+          {/* Chart Document Sheet */}
+          <div className="flex-1 p-3.5">
+            <div
+              className="flex h-full flex-col justify-between rounded-lg p-3.5 leading-relaxed"
+              style={{
+                background: 'var(--surface-1)',
+                border: '1px solid var(--border-subtle)',
+                fontSize: `${Math.round(12 * (zoom / 100))}px`,
+                color: 'var(--ink-2)',
+              }}
+            >
+              <div>
+                <div className="mb-2.5 flex flex-wrap items-center justify-between gap-1 pb-2" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
+                  <span className="font-semibold" style={{ color: 'var(--ink-1)' }}>
+                    {activeEnc.noteTitle}
+                  </span>
+                  <span className="text-[10px]" style={{ color: 'var(--ink-3)', fontFamily: 'var(--dial-font-mono)' }}>
+                    DOS {activeEnc.dos} · {activeEnc.pos}
+                  </span>
+                </div>
+
+                <div className="space-y-2.5">
+                  {activeEnc.spans.map((sp, i) => {
+                    const isMatch = chartSearch.trim().length > 1 && sp.text.toLowerCase().includes(chartSearch.trim().toLowerCase());
+                    const active = focusedCode === sp.code || isMatch;
+                    return (
+                      <div key={sp.code} className="flex flex-col gap-1">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setFocusedCode(sp.code);
+                            setRightTab('dx');
+                          }}
+                          className="rounded-md p-2 text-left transition-colors"
+                          style={{
+                            background: active ? 'var(--accent-soft)' : 'var(--surface-0)',
+                            color: 'var(--ink-1)',
+                            outline: active ? '1.5px solid var(--accent)' : '1px solid var(--border-subtle)',
+                          }}
+                        >
+                          <div className="mb-1 flex items-center justify-between gap-2 text-[10px]" style={{ fontFamily: 'var(--dial-font-mono)' }}>
+                            <span className="font-semibold" style={{ color: 'var(--accent)' }}>
+                              {i + 1}. [{sp.code} · {sp.hcc}]
+                            </span>
+                            <span style={{ color: 'var(--ink-3)' }}>Click to sync →</span>
+                          </div>
+                          <div>{sp.text}</div>
+                        </button>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div
+                className="mt-3 pt-2 text-[10.5px]"
+                style={{
+                  borderTop: '1px solid var(--border-subtle)',
+                  color: activeEnc.signed ? 'var(--ink-3)' : 'var(--danger)',
+                  fontFamily: 'var(--dial-font-mono)',
+                }}
+              >
+                {activeEnc.extraLine}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* RIGHT PANE: Diagnoses, AI Suspects & Full Encounter Details */}
+        <div className="flex flex-col" style={{ background: 'var(--surface-1)' }}>
+          {/* Discoverable Tabs inside Right Coding Panel */}
+          <div className="grid grid-cols-3 gap-1 p-2" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
+            {[
+              { id: 'dx' as const, label: `Dx (${entered.length})` },
+              { id: 'suspects' as const, label: `AI (${aiSuspects.length})` },
+              { id: 'details' as const, label: 'Details' },
+            ].map((t) => (
+              <button
+                key={t.id}
+                type="button"
+                onClick={() => setRightTab(t.id)}
+                className="rounded-md py-1 text-[11px] font-medium transition-colors"
+                style={{
+                  background: rightTab === t.id ? 'var(--surface-2)' : 'transparent',
+                  color: rightTab === t.id ? 'var(--ink-1)' : 'var(--ink-3)',
+                  border: rightTab === t.id ? '1px solid var(--border-subtle)' : '1px solid transparent',
+                }}
+              >
+                {t.label}
+              </button>
+            ))}
+          </div>
+
+          {rightTab === 'dx' && (
+            <div className="flex flex-1 flex-col gap-2 p-2.5">
+              {/* Live ICD-10 Code Entry Input */}
+              <div className="relative">
+                <div className="flex items-center gap-1.5 rounded-md px-2.5 py-1.5" style={{ background: 'var(--surface-0)', border: '1px solid var(--border-strong)' }}>
+                  <Search className="h-3.5 w-3.5 shrink-0" style={{ color: 'var(--ink-3)' }} />
+                  <input
+                    type="text"
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' && matches[0]) addCode(matches[0]);
+                    }}
+                    placeholder="Add ICD-10 (J44, I73, E66, F32…)"
+                    className="min-w-0 flex-1 bg-transparent text-[11.5px] outline-none"
+                    style={{ color: 'var(--ink-1)' }}
+                  />
+                  <kbd className="rounded px-1 py-0.5 text-[9.5px]" style={{ background: 'var(--surface-1)', color: 'var(--ink-3)', fontFamily: 'var(--dial-font-mono)' }}>↵</kbd>
+                </div>
+
+                {matches.length > 0 && (
+                  <div
+                    className="absolute inset-x-0 top-full z-20 mt-1 flex flex-col gap-0.5 rounded-lg p-1"
+                    style={{ background: 'var(--surface-1)', border: '1px solid var(--border-strong)', boxShadow: 'var(--shadow-md)' }}
+                  >
+                    {matches.map((m) => (
+                      <button
+                        key={m.code}
+                        type="button"
+                        onClick={() => addCode(m)}
+                        className="flex items-center justify-between gap-2 rounded-md px-2 py-1.5 text-left text-[11px]"
+                        style={{ background: 'var(--surface-0)', color: 'var(--ink-1)' }}
+                      >
+                        <span className="min-w-0 truncate">
+                          <strong style={{ fontFamily: 'var(--dial-font-mono)' }}>{m.code}</strong> · {m.desc}
+                        </span>
+                        <span className="shrink-0 text-[10px]" style={{ color: 'var(--accent)', fontFamily: 'var(--dial-font-mono)' }}>
+                          +{m.raf.toFixed(3)}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Entered Diagnoses List */}
+              <div className="flex flex-1 flex-col gap-1.5 overflow-y-auto">
+                {entered.map((item) => {
+                  const active = focusedCode === item.code;
+                  const superseded = Boolean(item.supersededBy && entered.some((e) => e.code === item.supersededBy));
+                  const itemEnc = ENCOUNTERS.find((e) => e.id === item.encId);
+                  return (
+                    <div
+                      key={item.code}
+                      onClick={() => {
+                        setFocusedCode(item.code);
+                        setEncId(item.encId);
+                      }}
+                      className="cursor-pointer rounded-md p-2 transition-colors"
+                      style={{
+                        background: active ? 'var(--surface-2)' : 'var(--surface-0)',
+                        border: `1px solid ${active ? 'var(--accent)' : 'var(--border-subtle)'}`,
+                        opacity: superseded ? 0.55 : 1,
+                      }}
+                    >
+                      <div className="flex items-center justify-between gap-1.5">
+                        <div className="flex items-center gap-1.5">
+                          <span className={`text-[11.5px] font-semibold ${superseded ? 'line-through' : ''}`} style={{ color: 'var(--ink-1)', fontFamily: 'var(--dial-font-mono)' }}>
+                            {item.code}
+                          </span>
+                          <span className="rounded px-1 py-0.5 text-[9.5px]" style={{ background: 'var(--surface-1)', color: 'var(--ink-2)', fontFamily: 'var(--dial-font-mono)' }}>
+                            {item.hcc}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-1.5">
+                          <span className="tabular-nums-auto text-[10.5px] font-medium" style={{ color: superseded ? 'var(--ink-3)' : 'var(--success)', fontFamily: 'var(--dial-font-mono)' }}>
+                            {superseded ? 'Trumped' : `+${item.raf.toFixed(3)}`}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setEntered((prev) => prev.filter((x) => x.code !== item.code));
+                            }}
+                            aria-label={`Remove ${item.code}`}
+                            style={{ color: 'var(--ink-3)' }}
+                          >
+                            <X className="h-3 w-3" />
+                          </button>
+                        </div>
+                      </div>
+                      <div className="mt-0.5 truncate text-[10.5px]" style={{ color: 'var(--ink-3)' }}>{item.desc}</div>
+                      <div className="mt-1.5 flex items-center justify-between gap-2">
+                        <div className="flex gap-1">
+                          {['M', 'E', 'A', 'T'].map((l) => {
+                            const on = item.meat.includes(l);
+                            return (
+                              <button
+                                key={l}
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  toggleMeat(item.code, l);
+                                }}
+                                className="h-4 w-4 rounded text-[9.5px] font-bold"
+                                style={{
+                                  background: on ? 'var(--accent)' : 'var(--surface-1)',
+                                  color: on ? 'var(--accent-ink)' : 'var(--ink-3)',
+                                  border: on ? 'none' : '1px solid var(--border-subtle)',
+                                  fontFamily: 'var(--dial-font-mono)',
+                                }}
+                              >
+                                {l}
+                              </button>
+                            );
+                          })}
+                        </div>
+                        <span className="text-[9.5px]" style={{ color: 'var(--ink-3)', fontFamily: 'var(--dial-font-mono)' }}>
+                          {itemEnc?.dos.slice(0, 5)} · p.{item.page}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {rightTab === 'suspects' && (
+            <div className="flex flex-1 flex-col gap-1.5 p-2.5">
+              <div className="text-[10.5px]" style={{ color: 'var(--ink-3)' }}>
+                Click any AI suspect to capture & link to the active encounter ({activeEnc.dos}):
+              </div>
+              {aiSuspects.map((c) => (
+                <div key={c.code} className="flex items-center justify-between gap-2 rounded-md p-2" style={{ background: 'var(--surface-0)', border: '1px solid var(--border-subtle)' }}>
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-1.5 text-[11px]" style={{ fontFamily: 'var(--dial-font-mono)' }}>
+                      <strong style={{ color: 'var(--ink-1)' }}>{c.code}</strong>
+                      <span style={{ color: 'var(--ink-3)' }}>{c.hcc}</span>
+                      <span style={{ color: 'var(--success)' }}>+{c.raf.toFixed(3)}</span>
+                    </div>
+                    <div className="truncate text-[10.5px]" style={{ color: 'var(--ink-3)' }}>{c.desc}</div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      addCode(c, encId);
+                      setRightTab('dx');
+                    }}
+                    className="inline-flex shrink-0 items-center gap-1 rounded px-2 py-1 text-[10.5px] font-medium"
+                    style={{ background: 'var(--accent)', color: 'var(--accent-ink)' }}
+                  >
+                    <Plus className="h-3 w-3" /> Add
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {rightTab === 'details' && (
+            <div className="flex flex-1 flex-col gap-2 p-2.5 text-[11px]">
+              <div className="grid grid-cols-2 gap-1.5" style={{ fontFamily: 'var(--dial-font-mono)' }}>
+                <div className="rounded p-2" style={{ background: 'var(--surface-0)', border: '1px solid var(--border-subtle)' }}>
+                  <div className="text-[9.5px] uppercase" style={{ color: 'var(--ink-3)' }}>DOS</div>
+                  <div className="font-semibold" style={{ color: 'var(--ink-1)' }}>{activeEnc.dos}</div>
+                </div>
+                <div className="rounded p-2" style={{ background: 'var(--surface-0)', border: '1px solid var(--border-subtle)' }}>
+                  <div className="text-[9.5px] uppercase" style={{ color: 'var(--ink-3)' }}>POS</div>
+                  <div className="font-semibold" style={{ color: 'var(--ink-1)' }}>{activeEnc.pos}</div>
+                </div>
+                <div className="rounded p-2" style={{ background: 'var(--surface-0)', border: '1px solid var(--border-subtle)' }}>
+                  <div className="text-[9.5px] uppercase" style={{ color: 'var(--ink-3)' }}>Provider</div>
+                  <div className="truncate font-semibold" style={{ color: 'var(--ink-1)' }}>{activeEnc.provider}</div>
+                </div>
+                <div className="rounded p-2" style={{ background: 'var(--surface-0)', border: '1px solid var(--border-subtle)' }}>
+                  <div className="text-[9.5px] uppercase" style={{ color: 'var(--ink-3)' }}>NPI</div>
+                  <div className="font-semibold" style={{ color: 'var(--ink-1)' }}>{activeEnc.npi}</div>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between rounded p-2" style={{ background: 'var(--surface-0)', border: '1px solid var(--border-subtle)' }}>
+                <span style={{ color: 'var(--ink-2)' }}>Provider Signature</span>
+                <span className="inline-flex items-center gap-1 font-medium" style={{ color: activeEnc.signed ? 'var(--success)' : 'var(--danger)', fontFamily: 'var(--dial-font-mono)' }}>
+                  <ShieldCheck className="h-3.5 w-3.5" />
+                  {activeEnc.signed ? 'Valid & Signed' : 'Missing Signature'}
+                </span>
+              </div>
+
+              <label className="flex flex-col gap-1">
+                <span className="text-[10px] uppercase" style={{ color: 'var(--ink-3)', fontFamily: 'var(--dial-font-mono)' }}>Coder / RADV Note</span>
+                <textarea
+                  rows={2}
+                  value={coderNote}
+                  onChange={(e) => setCoderNote(e.target.value)}
+                  className="resize-none rounded-md p-2 text-[11px] outline-none"
+                  style={{ background: 'var(--surface-0)', color: 'var(--ink-1)', border: '1px solid var(--border-subtle)' }}
+                />
+              </label>
+            </div>
+          )}
         </div>
       </div>
     </div>
