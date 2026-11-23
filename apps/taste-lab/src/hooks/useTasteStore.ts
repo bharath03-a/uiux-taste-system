@@ -175,6 +175,12 @@ export function useTasteStore() {
       editorial: "'Inter', -apple-system, sans-serif",
       system: "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif",
       'mono-accent': "'Inter', -apple-system, sans-serif",
+      'swiss-grotesk': "'DM Sans', 'Inter', -apple-system, sans-serif",
+      'humanist-warm': "'Plus Jakarta Sans', -apple-system, sans-serif",
+      'dense-ops': "'IBM Plex Sans', -apple-system, sans-serif",
+      'neo-studio': "'DM Sans', 'Inter', -apple-system, sans-serif",
+      'newsprint-docs': "'Source Sans 3', 'Inter', -apple-system, sans-serif",
+      'terminal-craft': "'Inter', -apple-system, sans-serif",
     };
 
     const displayMap: Record<CraftDials['fontPairing'], string> = {
@@ -182,6 +188,25 @@ export function useTasteStore() {
       editorial: "'Instrument Serif', Georgia, serif",
       system: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif",
       'mono-accent': "'Inter', -apple-system, sans-serif",
+      'swiss-grotesk': "'Space Grotesk', 'DM Sans', sans-serif",
+      'humanist-warm': "'Fraunces', Georgia, serif",
+      'dense-ops': "'IBM Plex Sans', -apple-system, sans-serif",
+      'neo-studio': "'Outfit', 'Inter', sans-serif",
+      'newsprint-docs': "'Newsreader', Georgia, serif",
+      'terminal-craft': "'IBM Plex Mono', ui-monospace, monospace",
+    };
+
+    const monoMap: Record<CraftDials['fontPairing'], string> = {
+      geometric: "'JetBrains Mono', ui-monospace, monospace",
+      editorial: "'JetBrains Mono', ui-monospace, monospace",
+      system: "ui-monospace, 'SF Mono', Menlo, monospace",
+      'mono-accent': "'JetBrains Mono', ui-monospace, monospace",
+      'swiss-grotesk': "'IBM Plex Mono', ui-monospace, monospace",
+      'humanist-warm': "'JetBrains Mono', ui-monospace, monospace",
+      'dense-ops': "'IBM Plex Mono', ui-monospace, monospace",
+      'neo-studio': "'Fira Code', ui-monospace, monospace",
+      'newsprint-docs': "'JetBrains Mono', ui-monospace, monospace",
+      'terminal-craft': "'IBM Plex Mono', ui-monospace, monospace",
     };
 
     const trackingMap: Record<CraftDials['trackingTightness'], string> = {
@@ -199,8 +224,9 @@ export function useTasteStore() {
       '--dial-duration',
       dials.motionMode === 'instant' ? '0ms' : `${dials.durationMs}ms`
     );
-    root.style.setProperty('--dial-font-sans', sansMap[dials.fontPairing]);
-    root.style.setProperty('--dial-font-display', displayMap[dials.fontPairing]);
+    root.style.setProperty('--dial-font-sans', sansMap[dials.fontPairing] ?? sansMap.geometric);
+    root.style.setProperty('--dial-font-display', displayMap[dials.fontPairing] ?? displayMap.geometric);
+    root.style.setProperty('--dial-font-mono', monoMap[dials.fontPairing] ?? monoMap.geometric);
     root.style.setProperty('--dial-tracking-display', trackingMap[dials.trackingTightness]);
     root.style.setProperty('--dial-pad-card', `${padCard}px`);
     root.style.setProperty('--dial-gap', `${gap}px`);

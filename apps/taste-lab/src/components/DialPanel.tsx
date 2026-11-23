@@ -13,6 +13,121 @@ interface DialPanelProps {
   onReset: () => void;
 }
 
+const STYLE_PRESETS: { id: string; label: string; dials: Partial<CraftDials> }[] = [
+  {
+    id: 'linear',
+    label: 'Linear',
+    dials: {
+      density: 'balanced',
+      baseRadius: 10,
+      concentricRadii: true,
+      borderStrength: 1,
+      shadowDepth: 0.4,
+      pressScale: 0.975,
+      motionMode: 'spring',
+      springStiffness: 420,
+      springDamping: 32,
+      fontPairing: 'mono-accent',
+      trackingTightness: 'subtle',
+    },
+  },
+  {
+    id: 'calm-os',
+    label: 'Calm OS',
+    dials: {
+      density: 'airy',
+      baseRadius: 14,
+      concentricRadii: true,
+      borderStrength: 0.75,
+      shadowDepth: 0.65,
+      pressScale: 0.97,
+      motionMode: 'spring',
+      springStiffness: 340,
+      springDamping: 30,
+      fontPairing: 'system',
+      trackingTightness: 'subtle',
+    },
+  },
+  {
+    id: 'swiss',
+    label: 'Swiss Sharp',
+    dials: {
+      density: 'balanced',
+      baseRadius: 4,
+      concentricRadii: true,
+      borderStrength: 1.35,
+      shadowDepth: 0.1,
+      pressScale: 0.985,
+      motionMode: 'ease-out',
+      durationMs: 140,
+      fontPairing: 'swiss-grotesk',
+      trackingTightness: 'tight',
+    },
+  },
+  {
+    id: 'editorial',
+    label: 'Editorial',
+    dials: {
+      density: 'airy',
+      baseRadius: 8,
+      concentricRadii: true,
+      borderStrength: 0.9,
+      shadowDepth: 0.25,
+      pressScale: 0.98,
+      motionMode: 'ease-out',
+      durationMs: 200,
+      fontPairing: 'editorial',
+      trackingTightness: 'none',
+    },
+  },
+  {
+    id: 'dense-ops',
+    label: 'Dense Ops',
+    dials: {
+      density: 'compact',
+      baseRadius: 6,
+      concentricRadii: true,
+      borderStrength: 1.2,
+      shadowDepth: 0.2,
+      pressScale: 0.99,
+      motionMode: 'instant',
+      durationMs: 110,
+      fontPairing: 'dense-ops',
+      trackingTightness: 'subtle',
+    },
+  },
+  {
+    id: 'warm',
+    label: 'Warm Craft',
+    dials: {
+      density: 'airy',
+      baseRadius: 16,
+      concentricRadii: true,
+      borderStrength: 0.85,
+      shadowDepth: 0.75,
+      pressScale: 0.965,
+      motionMode: 'spring',
+      springStiffness: 380,
+      springDamping: 28,
+      fontPairing: 'humanist-warm',
+      trackingTightness: 'subtle',
+    },
+  },
+];
+
+const FONT_OPTIONS: [FontPairing, string][] = [
+  ['geometric', 'Geometric'],
+  ['editorial', 'Editorial'],
+  ['system', 'System OS'],
+  ['mono-accent', 'Mono Accent'],
+  ['swiss-grotesk', 'Swiss Grotesk'],
+  ['humanist-warm', 'Warm Serif'],
+  ['dense-ops', 'IBM Plex Ops'],
+  ['neo-studio', 'Studio Outfit'],
+  ['newsprint-docs', 'Newsreader'],
+  ['terminal-craft', 'Terminal Mono'],
+];
+
 export function DialPanel({ dials, onChange, onReset }: DialPanelProps) {
   return (
     <aside
@@ -48,6 +163,27 @@ export function DialPanel({ dials, onChange, onReset }: DialPanelProps) {
       </div>
 
       <div className="flex flex-col gap-5 p-4 text-[12px]">
+        {/* 1-Click Style Archetypes */}
+        <Section title="Style Archetypes">
+          <div className="grid grid-cols-2 gap-1.5">
+            {STYLE_PRESETS.map((preset) => (
+              <button
+                key={preset.id}
+                type="button"
+                onClick={() => onChange(preset.dials)}
+                className="craft-pressable craft-focus rounded-md px-2.5 py-1.5 text-left text-[11px] font-medium"
+                style={{
+                  background: 'var(--surface-0)',
+                  color: 'var(--ink-1)',
+                  border: '1px solid var(--border-subtle)',
+                }}
+              >
+                {preset.label}
+              </button>
+            ))}
+          </div>
+        </Section>
+
         {/* Spatial & Geometry */}
         <Section title="Geometry & Rhythm">
           <SegmentedChoice<DensityMode>
@@ -100,27 +236,20 @@ export function DialPanel({ dials, onChange, onReset }: DialPanelProps) {
         </Section>
 
         {/* Typography */}
-        <Section title="Typography Posture">
+        <Section title="Typography Posture (10 Pairings)">
           <div className="flex flex-col gap-1.5">
             <span className="text-[11.5px] font-medium" style={{ color: 'var(--ink-2)' }}>
               Font Pairing
             </span>
             <div className="grid grid-cols-2 gap-1.5">
-              {(
-                [
-                  ['geometric', 'Geometric'],
-                  ['editorial', 'Editorial'],
-                  ['system', 'System OS'],
-                  ['mono-accent', 'Mono Accent'],
-                ] as [FontPairing, string][]
-              ).map(([val, label]) => {
+              {FONT_OPTIONS.map(([val, label]) => {
                 const active = dials.fontPairing === val;
                 return (
                   <button
                     key={val}
                     type="button"
                     onClick={() => onChange({ fontPairing: val })}
-                    className="craft-pressable craft-focus rounded-md px-2.5 py-1.5 text-left text-[11.5px] font-medium"
+                    className="craft-pressable craft-focus truncate rounded-md px-2 py-1.5 text-left text-[11px] font-medium"
                     style={{
                       background: active ? 'var(--accent)' : 'var(--surface-0)',
                       color: active ? 'var(--accent-ink)' : 'var(--ink-2)',

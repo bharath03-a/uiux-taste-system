@@ -9,6 +9,7 @@ import {
   Check,
   Code2,
   Command,
+  Compass,
   Contrast,
   FlaskConical,
   FormInput,
@@ -17,16 +18,20 @@ import {
   LayoutPanelLeft,
   ListChecks,
   ListTree,
+  Lock,
   MenuSquare,
   MousePointerClick,
   PanelTop,
   ShieldCheck,
+  ShoppingBag,
   Sliders,
   SlidersHorizontal,
   Smartphone,
   Sparkles,
   Table2,
+  Tags,
   Type,
+  Wand2,
 } from 'lucide-react';
 import { SPECIMENS } from './data/specimens';
 import { PROJECT_THEMES } from './data/themes';
@@ -59,6 +64,11 @@ const SPECIMEN_ICONS: Record<SpecimenId, React.ComponentType<{ className?: strin
   'rich-pickers-uploads': Sliders,
   'lists-feeds-details': ListTree,
   'charts-analytics': BarChart3,
+  'auth-security': Lock,
+  'navigation-headers': Compass,
+  'badges-avatars-chips': Tags,
+  'heroes-landing-blocks': Wand2,
+  'commerce-checkout': ShoppingBag,
 };
 
 export function App() {
@@ -74,7 +84,7 @@ export function App() {
     writeTasteMarkdown,
   } = useTasteStore();
 
-  const [activeId, setActiveId] = useState<SpecimenId>('cards-metrics');
+  const [activeId, setActiveId] = useState<SpecimenId>('auth-security');
   const [breakUi, setBreakUi] = useState(false);
   const [mobilePreview, setMobilePreview] = useState(false);
   const [showDials, setShowDials] = useState(true);
@@ -92,10 +102,12 @@ export function App() {
   const batch2Specimens = SPECIMENS.filter((s) => s.batch === 2);
   const batch3Specimens = SPECIMENS.filter((s) => s.batch === 3);
   const batch4Specimens = SPECIMENS.filter((s) => s.batch === 4);
+  const batch5Specimens = SPECIMENS.filter((s) => s.batch === 5);
   const batch1Done = batch1Specimens.filter((s) => Boolean(profile.specimens[s.id]?.winnerId)).length;
   const batch2Done = batch2Specimens.filter((s) => Boolean(profile.specimens[s.id]?.winnerId)).length;
   const batch3Done = batch3Specimens.filter((s) => Boolean(profile.specimens[s.id]?.winnerId)).length;
   const batch4Done = batch4Specimens.filter((s) => Boolean(profile.specimens[s.id]?.winnerId)).length;
+  const batch5Done = batch5Specimens.filter((s) => Boolean(profile.specimens[s.id]?.winnerId)).length;
 
   return (
     <div className="flex h-screen w-screen flex-col overflow-hidden" style={{ background: 'var(--surface-0)' }}>
@@ -276,6 +288,7 @@ export function App() {
               { label: 'Batch 2 · UX & Overlays', items: batch2Specimens, doneCount: batch2Done },
               { label: 'Batch 3 · Data & AI-Native', items: batch3Specimens, doneCount: batch3Done },
               { label: 'Batch 4 · Generic App UX', items: batch4Specimens, doneCount: batch4Done },
+              { label: 'Batch 5 · Auth, Flows & UI', items: batch5Specimens, doneCount: batch5Done },
             ].map((group) => (
               <div key={group.label}>
                 <div className="mb-2 flex items-center justify-between px-2">

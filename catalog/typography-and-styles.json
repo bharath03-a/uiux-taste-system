@@ -1,0 +1,227 @@
+{
+  "version": "1.0.0",
+  "fontPairings": [
+    {
+      "id": "geometric",
+      "name": "Geometric SaaS",
+      "mood": ["modern", "saas", "clean", "product"],
+      "display": "'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif",
+      "body": "'Inter', -apple-system, BlinkMacSystemFont, sans-serif",
+      "mono": "'JetBrains Mono', ui-monospace, monospace",
+      "googleFontsUrl": "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap",
+      "notes": "Balanced geometric warmth for everyday web apps, dashboards, and consumer SaaS."
+    },
+    {
+      "id": "editorial",
+      "name": "Editorial Contrast",
+      "mood": ["editorial", "luxury", "magazine", "brand"],
+      "display": "'Instrument Serif', Georgia, serif",
+      "body": "'Inter', -apple-system, sans-serif",
+      "mono": "'JetBrains Mono', ui-monospace, monospace",
+      "googleFontsUrl": "https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap",
+      "notes": "High-contrast serif display headings paired with neutral sans body for publishing and flagship marketing."
+    },
+    {
+      "id": "system",
+      "name": "Native System OS",
+      "mood": ["native", "fast", "minimal", "macos"],
+      "display": "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif",
+      "body": "-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif",
+      "mono": "ui-monospace, 'SF Mono', Menlo, monospace",
+      "googleFontsUrl": null,
+      "notes": "Zero font-download latency; feels unmistakably native across macOS, iOS, and Windows."
+    },
+    {
+      "id": "mono-accent",
+      "name": "Engineered Mono Accent",
+      "mood": ["developer", "linear", "vercel", "technical"],
+      "display": "'Inter', -apple-system, sans-serif",
+      "body": "'Inter', -apple-system, sans-serif",
+      "mono": "'JetBrains Mono', ui-monospace, monospace",
+      "googleFontsUrl": "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap",
+      "notes": "Ultra-crisp sans hierarchy with monospace accents for metrics, IDs, shortcuts, and badges."
+    },
+    {
+      "id": "swiss-grotesk",
+      "name": "Swiss Technical Grotesk",
+      "mood": ["swiss", "brutalist", "architectural", "hardware"],
+      "display": "'Space Grotesk', 'DM Sans', sans-serif",
+      "body": "'DM Sans', -apple-system, sans-serif",
+      "mono": "'IBM Plex Mono', ui-monospace, monospace",
+      "googleFontsUrl": "https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap",
+      "notes": "Sharp architectural geometry for devtools, hardware sites, fintech, and industrial SaaS."
+    },
+    {
+      "id": "humanist-warm",
+      "name": "Warm Craft Humanist",
+      "mood": ["warm", "friendly", "consumer", "creator"],
+      "display": "'Fraunces', Georgia, serif",
+      "body": "'Plus Jakarta Sans', -apple-system, sans-serif",
+      "mono": "'JetBrains Mono', ui-monospace, monospace",
+      "googleFontsUrl": "https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap",
+      "notes": "Soft optical-size serif display paired with approachable geometric body for consumer apps & commerce."
+    },
+    {
+      "id": "dense-ops",
+      "name": "Enterprise / Financial Ops",
+      "mood": ["enterprise", "financial", "data", "dense"],
+      "display": "'IBM Plex Sans', -apple-system, sans-serif",
+      "body": "'IBM Plex Sans', -apple-system, sans-serif",
+      "mono": "'IBM Plex Mono', ui-monospace, monospace",
+      "googleFontsUrl": "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap",
+      "notes": "High legibility at 11–13px with crisp zero/one distinction for tables, trading, and observability."
+    },
+    {
+      "id": "neo-studio",
+      "name": "Modern Product Studio",
+      "mood": ["studio", "startup", "expressive", "creative"],
+      "display": "'Outfit', 'Inter', sans-serif",
+      "body": "'DM Sans', -apple-system, sans-serif",
+      "mono": "'Fira Code', ui-monospace, monospace",
+      "googleFontsUrl": "https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Fira+Code:wght@400;500&family=Outfit:wght@500;600;700&display=swap",
+      "notes": "Confident geometric display proportions ideal for startup product launches and design tools."
+    },
+    {
+      "id": "newsprint-docs",
+      "name": "Long-Form Docs & Publishing",
+      "mood": ["docs", "reading", "writing", "knowledge"],
+      "display": "'Newsreader', Georgia, serif",
+      "body": "'Source Sans 3', -apple-system, sans-serif",
+      "mono": "'JetBrains Mono', ui-monospace, monospace",
+      "googleFontsUrl": "https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,500;6..72,600&family=Source+Sans+3:wght@400;500;600&display=swap",
+      "notes": "Engineered for zero eye fatigue across long-form articles, wikis, and documentation portals."
+    },
+    {
+      "id": "terminal-craft",
+      "name": "Precision Terminal Mono",
+      "mood": ["cli", "terminal", "hacker", "infra"],
+      "display": "'IBM Plex Mono', ui-monospace, monospace",
+      "body": "'Inter', -apple-system, sans-serif",
+      "mono": "'IBM Plex Mono', ui-monospace, monospace",
+      "googleFontsUrl": "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap",
+      "notes": "Monospace display headers paired with calm sans prose for infrastructure, security, and CLI companions."
+    }
+  ],
+  "styleArchetypes": [
+    {
+      "id": "linear-precision",
+      "name": "Linear Precision",
+      "summary": "Balanced density, 1px translucent hairlines, subtle spring physics, engineered sans + mono accents.",
+      "dials": {
+        "density": "balanced",
+        "baseRadius": 10,
+        "concentricRadii": true,
+        "borderStrength": 1,
+        "shadowDepth": 0.4,
+        "pressScale": 0.975,
+        "durationMs": 180,
+        "motionMode": "spring",
+        "springStiffness": 420,
+        "springDamping": 32,
+        "fontPairing": "mono-accent",
+        "tabularNums": true,
+        "trackingTightness": "subtle"
+      }
+    },
+    {
+      "id": "apple-calm",
+      "name": "Calm Native OS",
+      "summary": "Airy spacing, generous concentric corners, soft ambient elevation, zero-latency native system stack.",
+      "dials": {
+        "density": "airy",
+        "baseRadius": 14,
+        "concentricRadii": true,
+        "borderStrength": 0.75,
+        "shadowDepth": 0.65,
+        "pressScale": 0.97,
+        "durationMs": 220,
+        "motionMode": "spring",
+        "springStiffness": 340,
+        "springDamping": 30,
+        "fontPairing": "system",
+        "tabularNums": true,
+        "trackingTightness": "subtle"
+      }
+    },
+    {
+      "id": "swiss-sharp",
+      "name": "Swiss Architectural",
+      "summary": "Crisp 4px corners, confident hairlines, zero blur shadows, Space Grotesk + IBM Plex Mono.",
+      "dials": {
+        "density": "balanced",
+        "baseRadius": 4,
+        "concentricRadii": true,
+        "borderStrength": 1.35,
+        "shadowDepth": 0.1,
+        "pressScale": 0.985,
+        "durationMs": 140,
+        "motionMode": "ease-out",
+        "springStiffness": 500,
+        "springDamping": 38,
+        "fontPairing": "swiss-grotesk",
+        "tabularNums": true,
+        "trackingTightness": "tight"
+      }
+    },
+    {
+      "id": "editorial-craft",
+      "name": "Editorial Publishing",
+      "summary": "Airy whitespace, Instrument Serif display headings, calm hairline dividers, effortless reading rhythm.",
+      "dials": {
+        "density": "airy",
+        "baseRadius": 8,
+        "concentricRadii": true,
+        "borderStrength": 0.9,
+        "shadowDepth": 0.25,
+        "pressScale": 0.98,
+        "durationMs": 200,
+        "motionMode": "ease-out",
+        "springStiffness": 360,
+        "springDamping": 34,
+        "fontPairing": "editorial",
+        "tabularNums": true,
+        "trackingTightness": "normal"
+      }
+    },
+    {
+      "id": "dense-ops",
+      "name": "High-Density Ops / Finance",
+      "summary": "Compact 32px controls, crisp 6px radii, instant zero-delay interactions, IBM Plex Sans + Mono.",
+      "dials": {
+        "density": "compact",
+        "baseRadius": 6,
+        "concentricRadii": true,
+        "borderStrength": 1.2,
+        "shadowDepth": 0.2,
+        "pressScale": 0.99,
+        "durationMs": 110,
+        "motionMode": "instant",
+        "springStiffness": 560,
+        "springDamping": 40,
+        "fontPairing": "dense-ops",
+        "tabularNums": true,
+        "trackingTightness": "subtle"
+      }
+    },
+    {
+      "id": "warm-tactile",
+      "name": "Warm Consumer Tactile",
+      "summary": "Generous 16px rounded geometry, tactile press compression, layered ambient depth, Fraunces + Jakarta.",
+      "dials": {
+        "density": "airy",
+        "baseRadius": 16,
+        "concentricRadii": true,
+        "borderStrength": 0.85,
+        "shadowDepth": 0.75,
+        "pressScale": 0.965,
+        "durationMs": 210,
+        "motionMode": "spring",
+        "springStiffness": 380,
+        "springDamping": 28,
+        "fontPairing": "humanist-warm",
+        "tabularNums": true,
+        "trackingTightness": "subtle"
+      }
+    }
+  ]
+}

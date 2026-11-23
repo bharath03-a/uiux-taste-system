@@ -1,0 +1,13 @@
+{
+  "name": "@uiux-taste/mcp",
+  "version": "0.2.0",
+  "description": "Zero-dependency local MCP server for deterministic WCAG/APCA contrast math, multi-framework theme generation, font pairings, style presets, and UI stack guidance",
+  "type": "module",
+  "license": "MIT",
+  "bin": {
+    "taste-mcp": "./server.mjs"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

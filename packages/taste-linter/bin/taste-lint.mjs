@@ -221,7 +221,7 @@ function walkFiles(dir, out = []) {
     if (IGNORE_DIRS.has(entry.name)) continue;
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) walkFiles(full, out);
-    else if (/\.(tsx|jsx|ts|css)$/.test(entry.name)) out.push(full);
+    else if (/\.(tsx|jsx|ts|vue|svelte|html|css|scss|dart|swift)$/.test(entry.name)) out.push(full);
   }
   return out;
 }
@@ -249,7 +249,7 @@ const SEMANTIC_PAIRS = [
 
 function extractTokenBlocks(filePath, content) {
   const blocks = [];
-  if (filePath.endsWith('.css')) {
+  if (/\.(css|scss)$/.test(filePath)) {
     const cssBlockRe = /([^{}]+)\{([^{}]+)\}/g;
     let m;
     while ((m = cssBlockRe.exec(content)) !== null) {
@@ -321,8 +321,8 @@ for (const file of files) {
     }
   }
 
-  // 2. Component Static Taste Rules (.tsx / .jsx)
-  if (/\.(tsx|jsx)$/.test(file)) {
+  // 2. Component Static Taste Rules (.tsx / .jsx / .vue / .svelte / .html)
+  if (/\.(tsx|jsx|vue|svelte|html)$/.test(file)) {
     const isThemeDefinitionOrSandbox =
       /ContrastModal\.tsx$/.test(file) || /themes?\.tsx?$/.test(file);
 
@@ -331,9 +331,9 @@ for (const file of files) {
       const lineNo = idx + 1;
       if (line.includes('taste-lint-ignore')) return;
 
-      // Ban scale-0 / scale(0) entrances in className or style/transform definitions
+      // Ban scale-0 / scale(0) entrances in class/className or style/transform definitions
       const isCodeStyleLine =
-        /className=|style=|transform|initial=|exit=|animate=/.test(line);
+        /className=|class=|style=|transform|initial=|exit=|animate=/.test(line);
       if (isCodeStyleLine && /\bscale-0\b|scale\(\s*0\s*\)/.test(line)) {
         errors.push({
           rule: 'motion/no-scale-zero',
@@ -343,7 +343,7 @@ for (const file of files) {
         });
       }
 
-      // Warn on raw hardcoded hex colors inside JSX className/style attributes
+      // Warn on raw hardcoded hex colors inside template/JSX class/style attributes
       if (!isThemeDefinitionOrSandbox && isCodeStyleLine) {
         const hexMatches = line.match(/(?:bg|text|border|fill|stroke)-\[#[0-9a-fA-F]{3,8}\]|(?:background|color|borderColor)\s*:\s*['"]#[0-9a-fA-F]{3,8}['"]/g);
         if (hexMatches) {

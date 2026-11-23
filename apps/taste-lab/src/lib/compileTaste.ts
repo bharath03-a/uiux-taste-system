@@ -9,11 +9,17 @@ export function compileTasteMarkdown(profile: TasteProfile): string {
     airy: 'Airy (control height 42px, card padding 24px, gap 16px)',
   };
 
-  const fontMap = {
+  const fontMap: Record<TasteProfile['dials']['fontPairing'], string> = {
     geometric: 'Geometric Sans (`Plus Jakarta Sans` / `Inter`) + `JetBrains Mono` for code/IDs',
     editorial: 'Editorial Contrast (`Instrument Serif` display + `Inter` UI body + `JetBrains Mono`)',
     system: 'Native System Stack (`-apple-system`, `SF Pro`, `Segoe UI`) for zero-latency OS craft',
     'mono-accent': 'Precision Sans (`Inter`) + `JetBrains Mono` for metrics, timestamps, and metadata',
+    'swiss-grotesk': 'Swiss Technical Grotesk (`Space Grotesk` display + `DM Sans` body + `IBM Plex Mono`)',
+    'humanist-warm': 'Warm Craft Humanist (`Fraunces` optical serif + `Plus Jakarta Sans` + `JetBrains Mono`)',
+    'dense-ops': 'Enterprise / Financial Ops (`IBM Plex Sans` + `IBM Plex Mono` for crisp 11–13px legibility)',
+    'neo-studio': 'Modern Product Studio (`Outfit` display + `DM Sans` body + `Fira Code`)',
+    'newsprint-docs': 'Long-Form Docs (`Newsreader` serif + `Source Sans 3` body + `JetBrains Mono`)',
+    'terminal-craft': 'Precision Terminal (`IBM Plex Mono` display & code + `Inter` prose)',
   };
 
   const motionDesc =

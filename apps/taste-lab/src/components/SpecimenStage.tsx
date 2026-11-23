@@ -19,6 +19,11 @@ import { OnboardingWizardsSpecimen } from '../specimens/OnboardingWizardsSpecime
 import { RichPickersUploadsSpecimen } from '../specimens/RichPickersUploadsSpecimen';
 import { ListsFeedsDetailsSpecimen } from '../specimens/ListsFeedsDetailsSpecimen';
 import { ChartsAnalyticsSpecimen } from '../specimens/ChartsAnalyticsSpecimen';
+import { AuthSecuritySpecimen } from '../specimens/AuthSecuritySpecimen';
+import { NavigationHeadersSpecimen } from '../specimens/NavigationHeadersSpecimen';
+import { BadgesAvatarsChipsSpecimen } from '../specimens/BadgesAvatarsChipsSpecimen';
+import { HeroesLandingSpecimen } from '../specimens/HeroesLandingSpecimen';
+import { CommerceCheckoutSpecimen } from '../specimens/CommerceCheckoutSpecimen';
 import type { SpecimenContext, SpecimenDecision, SpecimenDefinition } from '../types/taste';
 
 interface SpecimenStageProps {
@@ -92,6 +97,16 @@ export function SpecimenStage({
         return <ListsFeedsDetailsSpecimen variantId={variantId} ctx={ctx} />;
       case 'charts-analytics':
         return <ChartsAnalyticsSpecimen variantId={variantId} ctx={ctx} />;
+      case 'auth-security':
+        return <AuthSecuritySpecimen variantId={variantId} ctx={ctx} />;
+      case 'navigation-headers':
+        return <NavigationHeadersSpecimen variantId={variantId} ctx={ctx} />;
+      case 'badges-avatars-chips':
+        return <BadgesAvatarsChipsSpecimen variantId={variantId} ctx={ctx} />;
+      case 'heroes-landing-blocks':
+        return <HeroesLandingSpecimen variantId={variantId} ctx={ctx} />;
+      case 'commerce-checkout':
+        return <CommerceCheckoutSpecimen variantId={variantId} ctx={ctx} />;
     }
   };
 

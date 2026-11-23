@@ -1,27 +1,28 @@
 # UI/UX Taste System
 
 > **Colors are project theming, NOT taste.**  
-> An interactive, color-agnostic **Taste Lab**, **TASTE.md Compiler**, deterministic **WCAG 2.1 + APCA (`Lc`) Contrast Linter**, **Multi-Registry MCP Starter Pack**, and **Portable Agent `SKILL.md` Suite** so AI coding assistants (Claude Code, Antigravity, Codex, Cursor, Gemini CLI) build crisp, accessible interfaces true to *your* taste—without generic "AI slop."
+> A framework-agnostic **Taste Lab**, **Local Design MCP Server (`taste-mcp`)**, **Universal Multi-Framework Theme & Scale Generator (`taste-tokens`)**, deterministic **WCAG 2.1 + APCA (`Lc`) Contrast Linter (`taste-lint`)**, **Curated Typography / Style / Framework Catalogs**, and **5 Portable Agent Skills** so AI coding assistants (Claude Code, Antigravity, Codex, Cursor, Gemini CLI) build crisp, accessible interfaces in **any UI framework**—without generic "AI slop."
 
 ---
 
-## What's Inside
+## What's Inside (v0.2.0)
 
 | Module | Path | Purpose |
 | :--- | :--- | :--- |
-| **Interactive Taste Lab** | `apps/taste-lab/` | Local React + Vite workbench with **20 categories / 170+ live interactive prototypes** across 4 batches, live Craft Dials, Theme Swapper, `Break UI` + `390px` mobile stress toggles, and a live **Color Contrast Inspector**. |
+| **Interactive Taste Lab** | `apps/taste-lab/` | Local React + Vite workbench with **25 categories / 220+ live interactive prototypes** across 5 batches, **10 curated font pairings**, **6 one-click Style Archetypes**, live Craft Dials, Theme Swapper, `Break UI` + `390px` mobile stress toggles, and a live **Color Contrast Inspector**. |
+| **Zero-Dep Local MCP Server** | `packages/taste-mcp/server.mjs` | Stdio JSON-RPC 2.0 MCP server giving AI agents **6 active design tools** (`check_contrast`, `generate_accessible_theme`, `suggest_color_scale`, `pick_typography_and_style`, `recommend_ui_stack`, `get_taste_spec`) so agents can understand, adapt, and fix colors, fonts, and libraries dynamically. |
+| **Multi-Framework Token Generator** | `packages/taste-linter/bin/taste-tokens.mjs` | Zero-dependency CLI generating verified light/dark semantic palettes & 50–950 contrast-annotated scales from any brand hex into **CSS, Tailwind v4, shadcn, Flutter, SwiftUI, React Native, or W3C DTCG JSON**. |
+| **Contrast & Taste Linter** | `packages/taste-linter/bin/taste-lint.mjs` | Deterministic CLI (`npm run lint:taste`) auditing **WCAG 2.1 AA/AAA** and **APCA W3 `Lc`** contrast + auto-fix hex suggestions + static taste checks across `.tsx`, `.jsx`, `.vue`, `.svelte`, `.html`, `.css`, `.scss`, `.dart`, and `.swift`. |
+| **Machine-Readable Catalogs** | `catalog/` | `typography-and-styles.json` (10 curated font pairings + 6 style archetypes) & `framework-libraries.json` (accessible primitive stacks for **9 UI frameworks**: React, Vue/Nuxt, Svelte, Angular, Solid, Vanilla/Web Components, React Native, Flutter, SwiftUI). |
+| **5 Portable Agent Skills** | `skills/*/SKILL.md` | `ui-taste-craft`, `ui-contrast-audit`, `ui-typography-styles`, `pick-ui-library`, and `ui-prototype` — compatible with `.agents/skills`, `.claude/skills`, `.gemini/skills`, and `.cursor/skills`. |
 | **Compiled Taste Contract** | `taste/taste.json` & `taste/TASTE.md` | Machine-saved picks (multi-select + Primary Default + rationale + anti-patterns) compiled into a single portable spec every AI agent can read. |
-| **Zero-Dep Contrast & Taste Linter** | `packages/taste-linter/bin/taste-lint.mjs` | Deterministic CLI (`npm run lint:taste`) auditing **WCAG 2.1 AA/AAA** and **APCA W3 `Lc`** perceptual contrast on semantic tokens + auto-fix hex suggestions + anti-slop static checks. |
-| **Portable Agent Skills** | `skills/*/SKILL.md` | Four focused, low-bloat skills (`ui-taste-craft`, `ui-contrast-audit`, `pick-ui-library`, `ui-prototype`) compatible with `.agents/skills`, `.claude/skills`, `.gemini/skills`, and `.cursor/skills`. |
-| **Multi-Registry & MCP Configs** | `configs/` | Drop-in `components.registries.json` (`@coss`, `@diceui`, `@kibo-ui`, `@motion-primitives`, `@cult-ui`, `@react-bits`) and `mcp.starter.json` (`shadcn`, `21st`, `context7`, `playwright`, `chrome-devtools`). |
-| **Semantic Token Starter** | `templates/theme.tokens.css` | Light + Dark semantic CSS variables pre-verified against WCAG 2.1 AA + APCA `Lc`. |
-| **Cross-Harness Installer** | `scripts/install-skills.mjs` | One-command script (`npm run install:skills`) to deploy your skills + bundled `TASTE.md` into any work repo or global agent home directory. |
+| **Multi-Registry & MCP Configs** | `configs/` | Drop-in `components.registries.json` (`@coss`, `@diceui`, `@kibo-ui`, `@motion-primitives`, `@cult-ui`, `@react-bits`) and `mcp.starter.json` (includes local `uiux-taste` MCP + `shadcn`, `21st`, `context7`, `playwright`, `chrome-devtools`). |
 
 ---
 
 ## Use It at Work in 60 Seconds
 
-### 1. Install the Portable Agent Skills Anywhere
+### 1. Install All 5 Portable Agent Skills Anywhere
 
 ```bash
 # Option A: One-line install from GitHub via the open Agent Skills CLI (works on any laptop!)
@@ -37,12 +38,47 @@ npm run install:skills -- --global
 npm run install:skills -- --target /path/to/your-work-repo --harness claude
 ```
 
-> Every skill installation automatically bundles your compiled `TASTE.md` as a fallback inside `ui-taste-craft/references/TASTE.md`, so even brand-new work repos immediately follow your calibrated taste with zero extra setup.
+### 2. Connect the Local `uiux-taste` MCP Server (Zero Dependencies)
 
-### 2. Run Deterministic Color Contrast & Taste Audits Anywhere
+Add this to your Claude Code / Cursor / Codex / Antigravity MCP config (also in [`configs/mcp.starter.json`](./configs/mcp.starter.json)):
+
+```json
+{
+  "mcpServers": {
+    "uiux-taste": {
+      "command": "node",
+      "args": ["/absolute/path/to/uiux-taste-system/packages/taste-mcp/server.mjs"]
+    }
+  }
+}
+```
+
+Once connected, your AI assistant can actively call:
+- `check_contrast` — Compute exact WCAG 2.1 ratio + APCA `Lc` + hue-preserving passing hex fix for any foreground/background pair.
+- `generate_accessible_theme` — Generate complete verified light + dark semantic tokens from any brand hex, formatted for `css`, `tailwind-v4`, `shadcn`, `flutter`, `swiftui`, `react-native`, or `dtcg-json`.
+- `suggest_color_scale` — Build a 50–950 shade ramp with WCAG & APCA annotations against white and dark surfaces.
+- `pick_typography_and_style` — Choose from 10 curated font pairings & 6 style archetypes (`linear-precision`, `apple-calm`, `swiss-sharp`, `editorial-craft`, `dense-ops`, `warm-tactile`) with font import links and CSS dials.
+- `recommend_ui_stack` — Pick the best accessible primitive/component library stack for **any** framework (`react`, `vue`, `svelte`, `angular`, `solid`, `vanilla`, `react-native`, `flutter`, `swiftui`).
+- `get_taste_spec` — Read the user's compiled `TASTE.md` contract on demand.
+
+### 3. Generate Accessible Multi-Framework Themes & Color Scales via CLI
 
 ```bash
-# Audit this repo (or pass any work repo directory)
+# Generate verified light + dark tokens for any framework
+npm run tokens:generate -- --brand "#2563eb" --format tailwind-v4
+npm run tokens:generate -- --brand "#10b981" --format flutter
+npm run tokens:generate -- --brand "#7c3aed" --format swiftui
+npm run tokens:generate -- --brand "#e11d48" --format shadcn
+npm run tokens:generate -- --brand "#0ea5e9" --format react-native
+
+# Generate a contrast-annotated 50-950 scale from any brand hex
+npm run tokens:generate -- --scale "#2563eb"
+```
+
+### 4. Run Deterministic Color Contrast & Taste Audits Anywhere
+
+```bash
+# Audit this repo (or pass any work repo directory — React, Vue, Svelte, Flutter, SwiftUI, CSS)
 npm run lint:taste
 node packages/taste-linter/bin/taste-lint.mjs /path/to/your-work-repo
 
@@ -52,14 +88,6 @@ node packages/taste-linter/bin/taste-lint.mjs --check "#10b981" "#ffffff"
 # JSON output for Claude Code / Codex / CI hooks
 node packages/taste-linter/bin/taste-lint.mjs /path/to/your-work-repo --json
 ```
-
-### 3. Empower Your AI Assistant with Live UI Registries & MCPs
-
-Instead of letting coding agents hand-roll dialogs, pickers, tables, and drawers blindly:
-
-1. **Multi-Registry `components.json`:** Merge [`configs/components.registries.json`](./configs/components.registries.json) into your project's `components.json` so `shadcn` can pull source-owned components from `@coss` (Base UI), `@diceui`, `@kibo-ui`, `@motion-primitives`, `@cult-ui`, and `@react-bits`.
-2. **Official `shadcn` MCP:** Run `npx shadcn@latest mcp init --client claude` (or `cursor` / `vscode` / `codex` / `opencode`).
-3. **Full Frontend MCP Stack:** Copy the servers you need from [`configs/mcp.starter.json`](./configs/mcp.starter.json) (`shadcn`, `21st`, `context7`, `playwright`, `chrome-devtools`, plus `Figma MCP`, `Storybook MCP`, and `Axe MCP` where applicable).
 
 ---
 
@@ -73,28 +101,20 @@ npm --prefix apps/taste-lab install
 npm run lab
 ```
 
-### 4 Calibrated Prototype Batches
+### 5 Calibrated Prototype Batches (25 Categories · 220+ Interactive Prototypes)
 1. **Batch 1 · Foundations (5 categories):** Surfaces & Elevation, Typography Rhythm, Buttons & Controls, Inputs & Forms, Tabs & Segmented Controls.
 2. **Batch 2 · UX & Overlays (5 categories × 10 = 50):** Overlays & Drawers, Popovers & Menus, Command Palette (`cmdk`), Toasts (`Sonner`), App Shell & Sidebars.
 3. **Batch 3 · Data & AI-Native (5 categories × 10 = 50):** Tables & Bulk Actions, Empty/Loading/Error Resilience, AI Streaming Markdown, Thinking Traces & Tool Chips, HITL Approvals & Diffs.
 4. **Batch 4 · Generic App UX (5 categories × 10 = 50):** Cards, KPIs & Bento Layouts; Steppers, Wizards & Onboarding; Pickers, Uploads & Rich Controls; Lists, Feeds & Settings Pages; Data Viz, Progress & Status.
+5. **Batch 5 · Auth, Nav, Landing & Commerce (5 categories × 10 = 50):** Auth, Login & Security; Topbars, Headers & Mobile Nav; Badges, Avatars, Chips & Tags; Heroes, Pricing & Landing Blocks; Pricing Tables, Cart & Checkout.
 
 ### Built-In Workbench Superpowers
+- **10 Curated Font Pairings & 6 Style Archetypes:** Live-swap between `Geist`, `Inter`, `Plus Jakarta Sans`, `Satoshi`, `IBM Plex`, `Editorial Serif` (`Instrument Serif` + `Inter`), `Display Mono` (`Space Grotesk` + `JetBrains Mono`), `Bricolage` (`Bricolage Grotesque`), `Outfit`, and `System Native` — or click one of 6 Style Archetypes (`Linear Precision`, `Apple Calm`, `Swiss Sharp`, `Editorial Craft`, `Dense Ops`, `Warm Tactile`) to snap density, radius, borders, motion, and typography simultaneously.
 - **Color-Agnostic Theme Slot:** Flip between Neutral Light, Mono Dark, Warm Paper, Test Cobalt, and Test Pine Dark before locking picks—real taste holds up under any brand palette.
-- **Live Contrast Inspector:** Click the **Contrast** badge in the top bar to inspect WCAG 2.1 + APCA `Lc` scores across all semantic pairs, or paste your company's brand hexes into the **Work Brand Tester** to auto-fix failing contrast and copy ready-to-use CSS variables.
+- **Live Contrast Inspector:** Inspect WCAG 2.1 + APCA `Lc` scores across all semantic pairs, or paste your company's brand hexes into the **Work Brand Tester** to auto-fix failing contrast and copy ready-to-use CSS variables.
 - **Multi-Select + Primary Default:** Pick multiple patterns that belong in your kit and star one as the **Primary Default**, plus record *When to use* and *Never do* rules that compile straight into `taste/TASTE.md`.
 
 ---
-
-## Publishing as Open Source
-
-```bash
-git init
-git add .
-git commit -m "feat: initial open-source release of UI/UX Taste System"
-# Create a GitHub repo and push:
-# gh repo create uiux-taste-system --public --source=. --remote=origin --push
-```
 
 ## License
 

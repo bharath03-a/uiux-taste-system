@@ -1,0 +1,110 @@
+{
+  "version": "1.0.0",
+  "frameworks": {
+    "react": {
+      "label": "React / Next.js / Vite",
+      "foundations": "@base-ui/react + @coss (or shadcn/ui v4 matching existing repo)",
+      "specialists": {
+        "toasts": "sonner",
+        "command-palette": "cmdk",
+        "drawers": "@base-ui/react Drawer (or vaul on Radix)",
+        "tables": "@tanstack/react-table",
+        "numbers": "@number-flow/react",
+        "complex-controls": "@diceui (faceted filters, action bar, stepper, combobox, file upload)",
+        "workspace-widgets": "@kibo-ui (kanban, gantt, calendars, dropzone)",
+        "motion": "motion (motion/react) + @motion-primitives",
+        "ai-native": "streamdown + shadcn AI Elements / assistant-ui",
+        "showcase": "21st MCP / @cult-ui / @react-bits (sparingly)"
+      },
+      "tokenFormat": "tailwind-v4 or css"
+    },
+    "vue": {
+      "label": "Vue 3 / Nuxt",
+      "foundations": "Reka UI (formerly Radix Vue) + shadcn-vue (or Nuxt UI v3)",
+      "specialists": {
+        "toasts": "vue-sonner",
+        "command-palette": "reka-ui Combobox / Dialog or Nuxt UI CommandPalette",
+        "drawers": "vaul-vue",
+        "tables": "@tanstack/vue-table",
+        "numbers": "@number-flow/vue",
+        "motion": "motion-v (@vueuse/motion)"
+      },
+      "tokenFormat": "tailwind-v4 or css"
+    },
+    "svelte": {
+      "label": "Svelte 5 / SvelteKit",
+      "foundations": "Bits UI + shadcn-svelte (or Melt UI)",
+      "specialists": {
+        "toasts": "svelte-sonner",
+        "command-palette": "bits-ui Command (cmdk-sv)",
+        "drawers": "vaul-svelte",
+        "tables": "@tanstack/svelte-table",
+        "numbers": "@number-flow/svelte",
+        "motion": "svelte/motion + svelte/transition"
+      },
+      "tokenFormat": "tailwind-v4 or css"
+    },
+    "angular": {
+      "label": "Angular 19+",
+      "foundations": "Spartan UI (spartan-ng / Brain primitives + Tailwind) or Angular CDK + Material 3",
+      "specialists": {
+        "toasts": "ngx-sonner",
+        "command-palette": "spartan-ng BrnCommand",
+        "tables": "@tanstack/angular-table or Angular CDK Table",
+        "motion": "Web Animations API / CSS @starting-style"
+      },
+      "tokenFormat": "css or tailwind-v4"
+    },
+    "solid": {
+      "label": "SolidJS / SolidStart",
+      "foundations": "Kobalte + Corvu (or solid-ui)",
+      "specialists": {
+        "toasts": "solid-sonner",
+        "drawers": "corvu Drawer",
+        "tables": "@tanstack/solid-table",
+        "motion": "solid-motionone"
+      },
+      "tokenFormat": "tailwind-v4 or css"
+    },
+    "vanilla": {
+      "label": "Vanilla HTML / Astro / HTMX / Web Components",
+      "foundations": "Web Awesome (Shoelace) or native <dialog>, Popover API, CSS Anchor Positioning",
+      "specialists": {
+        "dialogs": "Native HTML <dialog> + @starting-style",
+        "popovers": "Native HTML popover attribute + CSS Anchor Positioning",
+        "motion": "CSS transitions + View Transitions API"
+      },
+      "tokenFormat": "css"
+    },
+    "react-native": {
+      "label": "React Native / Expo",
+      "foundations": "React Native Reusables (rn-primitives) + NativeWind v4 / Uniwind",
+      "specialists": {
+        "sheets": "@gorhom/bottom-sheet",
+        "toasts": "burnt (native OS toast) or sonner-native",
+        "motion": "react-native-reanimated + react-native-gesture-handler",
+        "lists": "@shopify/flash-list"
+      },
+      "tokenFormat": "react-native"
+    },
+    "flutter": {
+      "label": "Flutter (iOS / Android / Web / Desktop)",
+      "foundations": "forui or shadcn_ui (Flutter) + custom ThemeExtension semantic tokens",
+      "specialists": {
+        "toasts": "toastification",
+        "sheets": "wolt_modal_sheet",
+        "motion": "flutter_animate + ImplicitlyAnimatedWidget"
+      },
+      "tokenFormat": "flutter"
+    },
+    "swiftui": {
+      "label": "SwiftUI (iOS / macOS)",
+      "foundations": "Native SwiftUI controls styled via semantic Color/ShapeStyle extensions + ViewModifiers",
+      "specialists": {
+        "sheets": "Native .sheet + .presentationDetents",
+        "motion": "Native .spring(duration:bounce:) + matchedGeometryEffect"
+      },
+      "tokenFormat": "swiftui"
+    }
+  }
+}

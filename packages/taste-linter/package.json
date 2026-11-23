@@ -5,10 +5,12 @@
   "type": "module",
   "license": "MIT",
   "bin": {
-    "taste-lint": "./bin/taste-lint.mjs"
+    "taste-lint": "./bin/taste-lint.mjs",
+    "taste-tokens": "./bin/taste-tokens.mjs"
   },
   "files": [
-    "bin/"
+    "bin/",
+    "lib/"
   ],
   "engines": {
     "node": ">=18.0.0"

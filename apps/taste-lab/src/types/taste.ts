@@ -1,6 +1,16 @@
 export type DensityMode = 'compact' | 'balanced' | 'airy';
 export type MotionMode = 'spring' | 'ease-out' | 'instant';
-export type FontPairing = 'geometric' | 'editorial' | 'system' | 'mono-accent';
+export type FontPairing =
+  | 'geometric'
+  | 'editorial'
+  | 'system'
+  | 'mono-accent'
+  | 'swiss-grotesk'
+  | 'humanist-warm'
+  | 'dense-ops'
+  | 'neo-studio'
+  | 'newsprint-docs'
+  | 'terminal-craft';
 export type TrackingTightness = 'none' | 'subtle' | 'tight';
 
 export interface CraftDials {
@@ -63,7 +73,12 @@ export type SpecimenId =
   | 'onboarding-wizards'
   | 'rich-pickers-uploads'
   | 'lists-feeds-details'
-  | 'charts-analytics';
+  | 'charts-analytics'
+  | 'auth-security'
+  | 'navigation-headers'
+  | 'badges-avatars-chips'
+  | 'heroes-landing-blocks'
+  | 'commerce-checkout';
 
 export interface VariantMeta {
   id: string;
@@ -75,7 +90,7 @@ export interface VariantMeta {
 
 export interface SpecimenDefinition {
   id: SpecimenId;
-  batch: 1 | 2 | 3 | 4;
+  batch: 1 | 2 | 3 | 4 | 5;
   title: string;
   subtitle: string;
   question: string;
